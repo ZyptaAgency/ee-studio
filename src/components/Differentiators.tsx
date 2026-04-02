@@ -34,58 +34,60 @@ export default function Differentiators() {
   const [colors, setColors] = useState<Record<number, string>>({});
 
   return (
-    <section className="relative py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto">
+    <section className="relative py-28 md:py-40 overflow-hidden">
       <FloatingShapes count={6} seed={4} />
 
-      <div className="text-center mb-16">
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.6 }}
-          className="text-sm tracking-[0.2em] uppercase text-[#F2B5D4] mb-4"
-        >
-          Pourquoi nous
-        </motion.p>
+      <div className="max-w-6xl mx-auto px-8 md:px-16 lg:px-24">
+        <div className="text-center mb-20">
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6 }}
+            className="text-sm tracking-[0.25em] uppercase text-[#F2B5D4] mb-5"
+          >
+            Pourquoi nous
+          </motion.p>
 
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="text-3xl md:text-4xl lg:text-5xl font-['Outfit']"
-          style={{ fontWeight: 700 }}
-        >
-          Ce qui nous différencie
-        </motion.h2>
-      </div>
-
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 text-center">
-        {DIFFS.map((item, i) => (
-          <motion.div
-            key={i}
+          <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-30px" }}
-            transition={{ duration: 0.5, delay: i * 0.1 }}
-            onMouseEnter={() => setColors((p) => ({ ...p, [i]: next() }))}
-            onMouseLeave={() => setColors((p) => { const c = { ...p }; delete c[i]; return c; })}
-            className="cursor-default"
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="text-3xl md:text-4xl lg:text-5xl font-['Outfit']"
+            style={{ fontWeight: 700 }}
           >
-            <span
-              className="block text-4xl md:text-5xl font-['Outfit'] mb-4 transition-colors duration-300"
-              style={{ color: colors[i] || PASTEL_ACCENTS[i], fontWeight: 800 }}
+            Ce qui nous différencie
+          </motion.h2>
+        </div>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 md:gap-14 text-center">
+          {DIFFS.map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-30px" }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              onMouseEnter={() => setColors((p) => ({ ...p, [i]: next() }))}
+              onMouseLeave={() => setColors((p) => { const c = { ...p }; delete c[i]; return c; })}
+              className="cursor-default"
             >
-              {item.label}
-            </span>
-            <h3 className="text-base font-['Outfit'] mb-2 text-[#F5F5F0]" style={{ fontWeight: 600 }}>
-              {item.title}
-            </h3>
-            <p className="text-sm text-[#888] font-light leading-relaxed">
-              {item.desc}
-            </p>
-          </motion.div>
-        ))}
+              <span
+                className="block text-4xl md:text-5xl font-['Outfit'] mb-5 transition-colors duration-300"
+                style={{ color: colors[i] || PASTEL_ACCENTS[i], fontWeight: 800 }}
+              >
+                {item.label}
+              </span>
+              <h3 className="text-base font-['Outfit'] mb-3 text-[#F5F5F0]" style={{ fontWeight: 600 }}>
+                {item.title}
+              </h3>
+              <p className="text-sm text-[#888] font-light leading-[1.8]">
+                {item.desc}
+              </p>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -34,27 +34,27 @@ export default function Navbar() {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           scrolled
             ? "py-3 bg-[#0A0A0A]/90 backdrop-blur-xl border-b border-white/5 shadow-lg shadow-black/20"
-            : "py-5 bg-transparent"
+            : "py-6 bg-transparent"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-8 md:px-16 lg:px-24 flex items-center justify-between">
           <a href="#" className="flex items-center">
             <Image
               src="/logo.png"
               alt="EE Studio"
               width={200}
               height={141}
-              className="h-14 md:h-16 w-auto object-contain"
+              className="h-12 md:h-14 w-auto object-contain"
             />
           </a>
 
           {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-8 lg:gap-12">
+          <div className="hidden md:flex items-center gap-10 lg:gap-12">
             {NAV_LINKS.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="relative text-[13px] font-light tracking-[0.08em] text-[#999] hover:text-[#F5F5F0] transition-colors duration-300"
+                className="relative text-[13px] font-light tracking-[0.06em] text-[#999] hover:text-[#F5F5F0] transition-colors duration-300"
                 onMouseEnter={() => handleHover(link.href)}
                 onMouseLeave={() =>
                   setHoverColors((prev) => ({ ...prev, [link.href]: "transparent" }))
@@ -62,8 +62,11 @@ export default function Navbar() {
               >
                 {link.label}
                 <span
-                  className="absolute -bottom-1 left-0 h-[1.5px] w-0 hover:w-full transition-all duration-300 rounded-full"
-                  style={{ backgroundColor: hoverColors[link.href] || "transparent", width: hoverColors[link.href] && hoverColors[link.href] !== "transparent" ? "100%" : "0%" }}
+                  className="absolute -bottom-1.5 left-0 h-[1.5px] rounded-full transition-all duration-300"
+                  style={{
+                    backgroundColor: hoverColors[link.href] || "transparent",
+                    width: hoverColors[link.href] && hoverColors[link.href] !== "transparent" ? "100%" : "0%",
+                  }}
                 />
               </a>
             ))}
@@ -71,7 +74,7 @@ export default function Navbar() {
 
           {/* Mobile burger */}
           <button
-            className="md:hidden w-10 h-10 flex items-center justify-center rounded-full border border-white/10 text-[#F5F5F0] transition-colors duration-300 hover:border-white/20"
+            className="md:hidden w-11 h-11 flex items-center justify-center rounded-full border border-white/10 text-[#F5F5F0] transition-colors duration-300 hover:border-white/20"
             onClick={() => setOpen(!open)}
             aria-label="Menu"
           >
@@ -88,14 +91,14 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-[#0A0A0A]/98 backdrop-blur-xl flex flex-col items-center justify-center gap-8"
+            className="fixed inset-0 z-40 bg-[#0A0A0A]/98 backdrop-blur-xl flex flex-col items-center justify-center gap-10"
           >
             <Image
               src="/logo.png"
               alt="EE Studio"
               width={200}
               height={141}
-              className="h-16 w-auto object-contain mb-8"
+              className="h-16 w-auto object-contain mb-6"
             />
             {NAV_LINKS.map((link, i) => (
               <motion.a

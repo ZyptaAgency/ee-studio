@@ -34,7 +34,7 @@ export default function CookieBanner() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 30 }}
           transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="fixed bottom-6 left-6 right-6 md:left-auto md:right-8 md:bottom-8 md:max-w-md z-[9998] rounded-2xl border border-white/10 bg-[#111]/95 backdrop-blur-xl p-6 shadow-2xl"
+          className="fixed bottom-8 left-1/2 -translate-x-1/2 w-[calc(100%-48px)] max-w-lg z-[9998] rounded-2xl border border-white/10 bg-[#111]/95 backdrop-blur-xl p-7 shadow-2xl"
         >
           <p className="text-sm text-[#CCC] font-light leading-relaxed mb-1">
             Ce site utilise des cookies pour améliorer votre expérience.

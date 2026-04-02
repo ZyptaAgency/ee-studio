@@ -34,8 +34,8 @@ export default function ServicePage({
   return (
     <>
       {/* Back nav */}
-      <nav className="fixed top-0 left-0 right-0 z-50 py-4 backdrop-blur-xl bg-[#0A0A0A]/90 border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
+      <nav className="fixed top-0 left-0 right-0 z-50 py-5 backdrop-blur-xl bg-[#0A0A0A]/90 border-b border-white/5">
+        <div className="max-w-6xl mx-auto px-8 md:px-16 lg:px-24 flex items-center justify-between">
           <a
             href="/"
             className="flex items-center gap-3 text-sm tracking-wide transition-colors duration-300"
@@ -60,7 +60,7 @@ export default function ServicePage({
 
       <main className="pt-32">
         {/* Hero */}
-        <section className="px-6 md:px-12 lg:px-24 max-w-5xl mx-auto mb-24 md:mb-32">
+        <section className="px-8 md:px-16 lg:px-24 max-w-5xl mx-auto mb-24 md:mb-32">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -115,7 +115,7 @@ export default function ServicePage({
         </section>
 
         {/* Details grid */}
-        <section className="px-6 md:px-12 lg:px-24 max-w-6xl mx-auto pb-32 md:pb-40">
+        <section className="px-8 md:px-16 lg:px-24 max-w-6xl mx-auto pb-32 md:pb-40">
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -168,7 +168,7 @@ export default function ServicePage({
         </section>
 
         {/* CTA bottom */}
-        <section className="border-t border-white/5 py-24 px-6 md:px-12 lg:px-24 text-center">
+        <section className="border-t border-white/5 py-28 px-8 md:px-16 lg:px-24 text-center">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

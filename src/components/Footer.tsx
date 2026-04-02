@@ -11,9 +11,9 @@ const NAV_LINKS = [
 ];
 
 const SOCIALS = [
-  { label: "Instagram", href: "#", color: "#E1306C" },
-  { label: "LinkedIn", href: "#", color: "#0A66C2" },
-  { label: "X / Twitter", href: "#", color: "#F5F5F0" },
+  { label: "Instagram", href: "#", letter: "Ig", color: "#E1306C" },
+  { label: "LinkedIn", href: "#", letter: "Li", color: "#0A66C2" },
+  { label: "X", href: "#", letter: "X", color: "#F5F5F0" },
 ];
 
 export default function Footer() {
@@ -25,85 +25,82 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative border-t border-white/5 bg-[#0A0A0A]">
-      {/* Pastel gradient top border */}
+    <footer className="relative border-t border-white/5 bg-[#080808]">
       <div
         className="absolute top-0 left-0 right-0 h-[1px]"
         style={{ background: "linear-gradient(90deg, transparent, #C3B1E130, #F2B5D430, #A8D8C830, transparent)" }}
       />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-20">
-        {/* Top: centered logo + description */}
-        <div className="text-center mb-14">
-          <div className="flex justify-center mb-5">
-            <Image
-              src="/logo.png"
-              alt="EE Studio"
-              width={240}
-              height={170}
-              className="h-16 md:h-20 w-auto object-contain"
-            />
-          </div>
-          <p className="text-sm text-[#777] font-light leading-relaxed max-w-md mx-auto">
-            Studio créatif, stratégique et opérationnel basé à Kinshasa.
-            De la stratégie à l&apos;exécution.
-          </p>
+      <div className="max-w-5xl mx-auto px-8 md:px-16 lg:px-24 py-20 md:py-28">
+        {/* Logo centered */}
+        <div className="flex justify-center mb-8">
+          <Image
+            src="/logo.png"
+            alt="EE Studio"
+            width={240}
+            height={170}
+            className="h-20 md:h-24 w-auto object-contain"
+          />
         </div>
 
-        {/* Middle: centered navigation */}
-        <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10 mb-10">
+        {/* Description */}
+        <p className="text-center text-sm text-[#777] font-light leading-[1.8] max-w-md mx-auto mb-12">
+          Studio créatif, stratégique et opérationnel basé à Kinshasa.
+          De la stratégie à l&apos;exécution.
+        </p>
+
+        {/* Navigation centered */}
+        <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 mb-12">
           {NAV_LINKS.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="text-sm text-[#888] hover:text-[#F5F5F0] transition-colors duration-300 font-light tracking-wide"
+              className="text-[13px] text-[#888] hover:text-[#F5F5F0] transition-colors duration-300 font-light tracking-wide"
               onMouseEnter={() => handleHover(link.label)}
               onMouseLeave={() =>
                 setHoverColors((prev) => ({ ...prev, [link.label]: "" }))
               }
-              style={{
-                color: hoverColors[link.label] || undefined,
-              }}
+              style={{ color: hoverColors[link.label] || undefined }}
             >
               {link.label}
             </a>
           ))}
         </div>
 
-        {/* Socials: centered icons */}
-        <div className="flex items-center justify-center gap-4 mb-12">
+        {/* Socials centered */}
+        <div className="flex items-center justify-center gap-5 mb-14">
           {SOCIALS.map((s) => (
             <a
               key={s.label}
               href={s.href}
               aria-label={s.label}
-              className="w-10 h-10 rounded-full border border-white/8 flex items-center justify-center transition-all duration-300 hover:border-white/20 text-xs font-medium tracking-wider"
-              style={{ color: `${s.color}80` }}
+              className="w-11 h-11 rounded-full border border-white/8 flex items-center justify-center transition-all duration-300 text-[11px] font-medium tracking-wider"
+              style={{ color: `${s.color}60` }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.color = s.color;
                 e.currentTarget.style.borderColor = `${s.color}40`;
-                e.currentTarget.style.boxShadow = `0 0 15px ${s.color}15`;
+                e.currentTarget.style.boxShadow = `0 0 20px ${s.color}12`;
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.color = `${s.color}80`;
+                e.currentTarget.style.color = `${s.color}60`;
                 e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
                 e.currentTarget.style.boxShadow = "none";
               }}
             >
-              {s.label[0]}
+              {s.letter}
             </a>
           ))}
         </div>
 
         {/* Separator */}
         <div
-          className="h-[1px] max-w-xs mx-auto mb-8"
-          style={{ background: "linear-gradient(90deg, transparent, #C3B1E120, transparent)" }}
+          className="h-[1px] max-w-xs mx-auto mb-10"
+          style={{ background: "linear-gradient(90deg, transparent, #C3B1E118, transparent)" }}
         />
 
         {/* Bottom */}
-        <div className="text-center space-y-3">
-          <p className="text-xs text-[#555] font-light">
+        <div className="text-center space-y-4">
+          <p className="text-xs text-[#555] font-light tracking-wide">
             © {new Date().getFullYear()} EE Studio SARL — Tous droits réservés
           </p>
           <a

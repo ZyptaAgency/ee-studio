@@ -1,161 +1,144 @@
 "use client";
-
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Phone, Send } from "lucide-react";
-import { PASTEL_COLORS } from "@/lib/constants";
-import { useI18n } from "@/lib/i18n";
-import FloatingShapes from "./FloatingShapes";
-import type { Shape } from "./FloatingShapes";
-
-const contactShapes: Shape[] = [
-  { type: "ring", size: 100, x: "88%", y: "15%", color: PASTEL_COLORS[2], delay: 0, duration: 22 },
-  { type: "cross", size: 30, x: "5%", y: "75%", color: PASTEL_COLORS[0], delay: 2, duration: 17 },
-  { type: "circle", size: 8, x: "60%", y: "85%", color: PASTEL_COLORS[5], delay: 1, duration: 15 },
-];
+import { usePastelRotation } from "@/hooks/usePastelRotation";
+import { useState } from "react";
+import { Mail, MessageCircle, MapPin } from "lucide-react";
 
 export default function Contact() {
-  const { t } = useI18n();
-  const [focused, setFocused] = useState<string | null>(null);
-  const [hoverColor, setHoverColor] = useState<string>(PASTEL_COLORS[0]);
-  const [colorIdx, setColorIdx] = useState(0);
+  const { next } = usePastelRotation();
+  const [btnColor, setBtnColor] = useState("#333");
+  const [focusColors, setFocusColors] = useState<Record<string, string>>({});
 
-  const nextColor = () => {
-    const color = PASTEL_COLORS[(colorIdx + 1) % PASTEL_COLORS.length];
-    setColorIdx((i) => i + 1);
-    setHoverColor(color);
-    return color;
+  const handleFocus = (field: string) => {
+    setFocusColors((p) => ({ ...p, [field]: next() }));
   };
 
-  const inputClass =
-    "w-full bg-transparent border-b border-white/10 py-3.5 px-0 text-[#F5F5F0] font-body text-sm placeholder:text-[#F5F5F0]/20 focus:outline-none transition-colors duration-300";
+  const handleBlur = (field: string) => {
+    setFocusColors((p) => { const c = { ...p }; delete c[field]; return c; });
+  };
 
   return (
-    <section id="contact" className="relative py-24 md:py-36 px-6 md:px-12">
-      <FloatingShapes shapes={contactShapes} opacity={0.06} />
-      <div className="relative z-10 max-w-5xl mx-auto">
-        <div className="text-center mb-14">
-          <motion.span
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-[11px] font-body tracking-[0.3em] uppercase text-[#F5F5F0]/40 block mb-4"
-          >
-            {t.contact.label}
-          </motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="font-heading text-3xl md:text-5xl font-bold tracking-tight mb-4"
-          >
-            {t.contact.title}
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="font-body text-sm font-light text-[#F5F5F0]/45 max-w-lg mx-auto"
-          >
-            {t.contact.subtitle}
-          </motion.p>
-        </div>
+    <section id="contact" className="py-32 md:py-40 px-6 md:px-12 lg:px-24 max-w-6xl mx-auto">
+      <motion.p
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.6 }}
+        className="text-sm tracking-[0.2em] uppercase text-[#666] mb-4"
+      >
+        Contact
+      </motion.p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-14 md:gap-20">
-          <motion.form
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-            className="space-y-7"
-            onSubmit={(e) => e.preventDefault()}
-          >
+      <motion.h2
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.7, delay: 0.1 }}
+        className="text-3xl md:text-4xl lg:text-5xl font-['Outfit'] mb-20"
+        style={{ fontWeight: 700 }}
+      >
+        Travaillons ensemble
+      </motion.h2>
+
+      <div className="grid md:grid-cols-2 gap-16 md:gap-24">
+        {/* Form */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="space-y-6"
+        >
+          {[
+            { name: "name", placeholder: "Votre nom", type: "text" },
+            { name: "email", placeholder: "Votre email", type: "email" },
+          ].map((field) => (
             <input
-              type="text"
-              placeholder={t.contact.name}
-              className={inputClass}
-              style={{ borderColor: focused === "name" ? hoverColor : undefined }}
-              onFocus={() => { setFocused("name"); nextColor(); }}
-              onBlur={() => setFocused(null)}
-              aria-label={t.contact.name}
-            />
-            <input
-              type="email"
-              placeholder={t.contact.email}
-              className={inputClass}
-              style={{ borderColor: focused === "email" ? hoverColor : undefined }}
-              onFocus={() => { setFocused("email"); nextColor(); }}
-              onBlur={() => setFocused(null)}
-              aria-label={t.contact.email}
-            />
-            <textarea
-              placeholder={t.contact.message}
-              rows={4}
-              className={`${inputClass} resize-none`}
-              style={{ borderColor: focused === "message" ? hoverColor : undefined }}
-              onFocus={() => { setFocused("message"); nextColor(); }}
-              onBlur={() => setFocused(null)}
-              aria-label={t.contact.message}
-            />
-            <motion.button
-              type="submit"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onMouseEnter={nextColor}
-              className="flex items-center gap-3 px-7 py-3.5 rounded-full border border-white/10 font-body text-xs tracking-[0.15em] uppercase text-[#F5F5F0] hover:border-transparent transition-all duration-300"
+              key={field.name}
+              type={field.type}
+              placeholder={field.placeholder}
+              onFocus={() => handleFocus(field.name)}
+              onBlur={() => handleBlur(field.name)}
+              className="w-full bg-transparent border-b border-white/10 py-4 text-base font-light text-[#F5F5F0] placeholder-[#555] outline-none transition-colors duration-300 focus:placeholder-[#888]"
               style={{
-                backgroundColor: `${hoverColor}12`,
-                borderColor: `${hoverColor}35`,
+                borderBottomColor: focusColors[field.name] || "rgba(255,255,255,0.1)",
               }}
-            >
-              {t.contact.send}
-              <Send size={14} />
-            </motion.button>
-          </motion.form>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5 }}
-            className="space-y-8"
+            />
+          ))}
+          <textarea
+            placeholder="Votre message"
+            rows={4}
+            onFocus={() => handleFocus("message")}
+            onBlur={() => handleBlur("message")}
+            className="w-full bg-transparent border-b border-white/10 py-4 text-base font-light text-[#F5F5F0] placeholder-[#555] outline-none resize-none transition-colors duration-300 focus:placeholder-[#888]"
+            style={{
+              borderBottomColor: focusColors["message"] || "rgba(255,255,255,0.1)",
+            }}
+          />
+          <button
+            onMouseEnter={() => setBtnColor(next())}
+            onMouseLeave={() => setBtnColor("#333")}
+            className="mt-4 px-8 py-3 rounded-full text-sm tracking-[0.1em] uppercase font-light border transition-all duration-400"
+            style={{
+              borderColor: btnColor,
+              color: btnColor === "#333" ? "#999" : btnColor,
+            }}
           >
-            <div>
-              <span className="text-[10px] font-body tracking-[0.2em] uppercase text-[#F5F5F0]/30 block mb-2">
-                Email
-              </span>
-              <a
-                href="mailto:contact@ee-studio.info"
-                className="flex items-center gap-2.5 font-body text-sm text-[#F5F5F0]/70 hover:text-[#F5F5F0] transition-colors group"
-              >
-                <Mail size={16} className="text-[#F5F5F0]/30 group-hover:text-[#C3B1E1] transition-colors" />
-                contact@ee-studio.info
-              </a>
-            </div>
-            <div>
-              <span className="text-[10px] font-body tracking-[0.2em] uppercase text-[#F5F5F0]/30 block mb-2">
-                WhatsApp
-              </span>
-              <a
-                href="https://wa.me/243XXXXXXXXX"
-                className="flex items-center gap-2.5 font-body text-sm text-[#F5F5F0]/70 hover:text-[#F5F5F0] transition-colors group"
-              >
-                <Phone size={16} className="text-[#F5F5F0]/30 group-hover:text-[#A8D8C8] transition-colors" />
-                +243 XXX XXX XXX
-              </a>
-            </div>
-            <div>
-              <span className="text-[10px] font-body tracking-[0.2em] uppercase text-[#F5F5F0]/30 block mb-2">
-                {t.contact.location}
-              </span>
-              <p className="font-body text-sm text-[#F5F5F0]/70">
-                {t.contact.locationValue}
-              </p>
-            </div>
-          </motion.div>
-        </div>
+            Envoyer
+          </button>
+        </motion.div>
+
+        {/* Info */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.3 }}
+          className="space-y-8"
+        >
+          {[
+            {
+              icon: Mail,
+              label: "Email",
+              value: "contact@ee-studio.info",
+              href: "mailto:contact@ee-studio.info",
+            },
+            {
+              icon: MessageCircle,
+              label: "WhatsApp",
+              value: "+243 XXX XXX XXX",
+              href: "https://wa.me/243XXXXXXXXX",
+            },
+            {
+              icon: MapPin,
+              label: "Localisation",
+              value: "Kinshasa, RDC",
+              href: null,
+            },
+          ].map((item, i) => {
+            const Icon = item.icon;
+            return (
+              <div key={i} className="flex items-start gap-4">
+                <Icon size={20} strokeWidth={1.5} className="text-[#555] mt-1 flex-shrink-0" />
+                <div>
+                  <p className="text-xs tracking-[0.15em] uppercase text-[#555] mb-1">
+                    {item.label}
+                  </p>
+                  {item.href ? (
+                    <a
+                      href={item.href}
+                      className="text-base font-light text-[#BBB] hover:text-[#F5F5F0] transition-colors duration-300"
+                    >
+                      {item.value}
+                    </a>
+                  ) : (
+                    <p className="text-base font-light text-[#BBB]">{item.value}</p>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </motion.div>
       </div>
     </section>
   );

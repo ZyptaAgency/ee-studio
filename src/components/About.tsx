@@ -1,128 +1,89 @@
 "use client";
-
-import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import FloatingShapes from "./FloatingShapes";
-import { PASTEL_COLORS } from "@/lib/constants";
-import { useI18n } from "@/lib/i18n";
-import type { Shape } from "./FloatingShapes";
-
-gsap.registerPlugin(ScrollTrigger);
-
-const KEYWORDS_EN = ["creative", "strategic", "operational", "marketing", "audiovisual", "sustainable"];
-const KEYWORDS_FR = ["créatif", "stratégique", "opérationnel", "marketing", "audiovisuel", "durable"];
-
-const PASTEL_MAP: Record<string, string> = {
-  creative: "#F2B5D4", créatif: "#F2B5D4",
-  strategic: "#C3B1E1", stratégique: "#C3B1E1",
-  operational: "#A8D8C8", opérationnel: "#A8D8C8", opérationnelle: "#A8D8C8",
-  marketing: "#FADADD",
-  audiovisual: "#B5D8EB", audiovisuel: "#B5D8EB",
-  sustainable: "#F5E6C8", durable: "#F5E6C8",
-};
-
-const aboutShapes: Shape[] = [
-  { type: "ring", size: 90, x: "90%", y: "20%", color: PASTEL_COLORS[2], delay: 0, duration: 20 },
-  { type: "circle", size: 10, x: "5%", y: "60%", color: PASTEL_COLORS[3], delay: 2, duration: 14 },
-  { type: "diamond", size: 40, x: "85%", y: "70%", color: PASTEL_COLORS[0], delay: 1, duration: 22 },
-  { type: "cross", size: 25, x: "15%", y: "15%", color: PASTEL_COLORS[5], delay: 3, duration: 18 },
-];
+import { usePastelRotation } from "@/hooks/usePastelRotation";
+import { useState } from "react";
 
 export default function About() {
-  const { t, lang } = useI18n();
-  const sectionRef = useRef<HTMLElement>(null);
-  const wordsRef = useRef<HTMLSpanElement[]>([]);
+  const { next } = usePastelRotation();
+  const [highlightColors, setHighlightColors] = useState<Record<string, string>>({});
 
-  const keywords = lang === "en" ? KEYWORDS_EN : KEYWORDS_FR;
+  const keywords = ["créatif", "stratégique", "opérationnel", "durable"];
 
-  useEffect(() => {
-    if (!sectionRef.current) return;
-    const words = wordsRef.current.filter(Boolean);
-    words.forEach((word) => {
-      gsap.fromTo(
-        word,
-        { opacity: 0.15 },
-        {
-          opacity: 1,
-          duration: 0.5,
-          scrollTrigger: {
-            trigger: word,
-            start: "top 85%",
-            end: "top 50%",
-            scrub: true,
-          },
-        }
-      );
-    });
-    return () => ScrollTrigger.getAll().forEach((tr) => tr.kill());
-  }, [lang]);
-
-  const renderWords = () => {
-    return t.about.text.split(" ").map((word, i) => {
-      const clean = word.replace(/[.,]/g, "").toLowerCase();
-      const isKeyword = keywords.includes(clean);
-      const color = PASTEL_MAP[clean];
-      return (
-        <span
-          key={`${lang}-${i}`}
-          ref={(el) => { if (el) wordsRef.current[i] = el; }}
-          className="inline-block mr-[0.3em] transition-colors duration-300"
-          style={
-            isKeyword && color
-              ? {
-                  backgroundColor: `${color}25`,
-                  borderBottom: `2px solid ${color}`,
-                  padding: "0 3px",
-                  borderRadius: "2px",
-                }
-              : {}
-          }
-        >
-          {word}
-        </span>
-      );
-    });
+  const handleKeywordHover = (word: string) => {
+    setHighlightColors((prev) => ({ ...prev, [word]: next() }));
   };
 
   return (
-    <section id="about" ref={sectionRef} className="relative py-24 md:py-36 px-6 md:px-12">
-      <FloatingShapes shapes={aboutShapes} opacity={0.06} />
-      <div className="relative z-10 max-w-4xl mx-auto text-center">
-        <motion.span
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-[11px] font-body tracking-[0.3em] uppercase text-[#F5F5F0]/40 block mb-8"
-        >
-          {t.about.label}
-        </motion.span>
+    <section id="about" className="py-32 md:py-40 px-6 md:px-12 lg:px-24 max-w-6xl mx-auto">
+      <motion.p
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.6 }}
+        className="text-sm tracking-[0.2em] uppercase text-[#666] mb-8"
+      >
+        À propos
+      </motion.p>
 
-        <div className="text-xl sm:text-2xl md:text-3xl font-heading font-light leading-relaxed tracking-wide text-[#F5F5F0]/90">
-          {renderWords()}
-        </div>
+      <motion.h2
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.7, delay: 0.1 }}
+        className="text-3xl md:text-4xl lg:text-5xl font-['Outfit'] leading-tight mb-12"
+        style={{ fontWeight: 700 }}
+      >
+        Un studio{" "}
+        {keywords.map((word, i) => (
+          <span key={word}>
+            <span
+              className="relative cursor-default transition-colors duration-300 inline-block"
+              onMouseEnter={() => handleKeywordHover(word)}
+              style={{ color: highlightColors[word] || "#F5F5F0" }}
+            >
+              {word}
+            </span>
+            {i < keywords.length - 1 ? (i === keywords.length - 2 ? " et " : ", ") : "."}
+          </span>
+        ))}
+      </motion.h2>
+
+      <div className="grid md:grid-cols-2 gap-12 md:gap-20">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+        >
+          <p className="text-base md:text-lg leading-relaxed text-[#BBB] font-light">
+            EE Studio est un studio créatif et stratégique basé à Kinshasa, fondé par Lise-Laure. 
+            Nous accompagnons les marques dans leur développement marketing — de la réflexion 
+            stratégique à la production de contenu, en passant par l&apos;exécution terrain.
+          </p>
+        </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="mt-14 flex flex-col md:flex-row gap-8 md:gap-12 text-left"
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.7, delay: 0.3 }}
         >
-          <div className="flex-1">
-            <p className="text-sm md:text-[15px] font-body font-light text-[#F5F5F0]/55 leading-relaxed">
-              {t.about.col1}
-            </p>
-          </div>
-          <div className="flex-1">
-            <p className="text-sm md:text-[15px] font-body font-light text-[#F5F5F0]/55 leading-relaxed">
-              {t.about.col2}
-            </p>
-          </div>
+          <p className="text-base md:text-lg leading-relaxed text-[#BBB] font-light">
+            Notre différence : une approche 360° qui combine marketing, production audiovisuelle 
+            et consulting en développement durable. On ne conseille pas seulement — on produit, 
+            on livre, on exécute.
+          </p>
         </motion.div>
       </div>
+
+      {/* Separator line */}
+      <motion.div
+        initial={{ scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+        className="h-[1px] bg-white/10 mt-24 origin-left"
+      />
     </section>
   );
 }

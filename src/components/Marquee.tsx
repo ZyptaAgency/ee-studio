@@ -1,25 +1,23 @@
 "use client";
+import { motion } from "framer-motion";
 
-import { useI18n } from "@/lib/i18n";
+const WORDS = "STRATÉGIE • CRÉATION • CONTENU • IMPACT • DURABLE • MARKETING • VISION • ";
+const REPEATED = WORDS.repeat(4);
 
 export default function Marquee() {
-  const { t } = useI18n();
-  const words = t.marquee;
-  const repeated = [...words, ...words, ...words, ...words];
-
   return (
-    <section className="relative py-12 md:py-16 overflow-hidden border-y border-white/5">
-      <div className="flex animate-marquee whitespace-nowrap">
-        {repeated.map((word, i) => (
-          <span
-            key={i}
-            className="font-heading text-4xl md:text-6xl font-bold tracking-wider text-[#F5F5F0]/[0.06] mx-5 md:mx-8 select-none"
-          >
-            {word}
-            <span className="mx-5 md:mx-8">•</span>
-          </span>
-        ))}
-      </div>
+    <section className="py-16 overflow-hidden border-y border-white/5">
+      <motion.div
+        animate={{ x: [0, -2000] }}
+        transition={{
+          x: { repeat: Infinity, repeatType: "loop", duration: 30, ease: "linear" },
+        }}
+        className="whitespace-nowrap"
+      >
+        <span className="text-5xl md:text-7xl font-['Outfit'] text-white/[0.04] tracking-wider" style={{ fontWeight: 800 }}>
+          {REPEATED}
+        </span>
+      </motion.div>
     </section>
   );
 }

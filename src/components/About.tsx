@@ -14,7 +14,7 @@ export default function About() {
   };
 
   return (
-    <section id="about" className="py-32 md:py-40 px-6 md:px-12 lg:px-24 max-w-6xl mx-auto">
+    <section id="about" className="py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto">
       <motion.p
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}

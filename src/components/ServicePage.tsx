@@ -34,26 +34,28 @@ export default function ServicePage({
   return (
     <>
       {/* Back nav */}
-      <nav className="fixed top-0 left-0 right-0 z-50 px-6 md:px-12 py-5 flex items-center justify-between backdrop-blur-md bg-[#0A0A0A]/80 border-b border-white/5">
-        <a
-          href="/"
-          className="flex items-center gap-3 text-sm tracking-wide transition-colors duration-300"
-          style={{ color: backColor }}
-          onMouseEnter={() => setBackColor(next())}
-          onMouseLeave={() => setBackColor("#666")}
-        >
-          <ArrowLeft size={18} strokeWidth={1.5} />
-          Retour
-        </a>
-        <a href="/" className="flex items-center">
-          <Image
-            src="/logo.png"
-            alt="EE Studio"
-            width={140}
-            height={99}
-            className="h-10 w-auto object-contain"
-          />
-        </a>
+      <nav className="fixed top-0 left-0 right-0 z-50 py-4 backdrop-blur-xl bg-[#0A0A0A]/90 border-b border-white/5">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
+          <a
+            href="/"
+            className="flex items-center gap-3 text-sm tracking-wide transition-colors duration-300"
+            style={{ color: backColor }}
+            onMouseEnter={() => setBackColor(next())}
+            onMouseLeave={() => setBackColor("#666")}
+          >
+            <ArrowLeft size={18} strokeWidth={1.5} />
+            Retour
+          </a>
+          <a href="/" className="flex items-center">
+            <Image
+              src="/logo.png"
+              alt="EE Studio"
+              width={200}
+              height={141}
+              className="h-14 w-auto object-contain"
+            />
+          </a>
+        </div>
       </nav>
 
       <main className="pt-32">

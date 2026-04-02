@@ -24,7 +24,7 @@ export default function Navbar() {
   return (
     <>
       <nav className="fixed top-0 left-0 right-0 z-50 px-6 md:px-12 py-5 flex items-center justify-between backdrop-blur-md bg-[#0A0A0A]/80 border-b border-white/5">
-        <a href="#" className="flex items-center gap-3">
+        <a href="#" className="flex items-center">
           <Image
             src="/logo.png"
             alt="EE Studio"

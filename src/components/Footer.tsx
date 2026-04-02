@@ -11,9 +11,9 @@ const NAV_LINKS = [
 ];
 
 const SOCIALS = [
-  { label: "Instagram", href: "#" },
-  { label: "LinkedIn", href: "#" },
-  { label: "X / Twitter", href: "#" },
+  { label: "Instagram", href: "#", color: "#E1306C" },
+  { label: "LinkedIn", href: "#", color: "#0A66C2" },
+  { label: "X / Twitter", href: "#", color: "#F5F5F0" },
 ];
 
 export default function Footer() {
@@ -25,86 +25,84 @@ export default function Footer() {
   };
 
   return (
-    <footer className="border-t border-white/5 bg-[#0A0A0A]">
+    <footer className="relative border-t border-white/5 bg-[#0A0A0A]">
+      {/* Pastel gradient top border */}
+      <div
+        className="absolute top-0 left-0 right-0 h-[1px]"
+        style={{ background: "linear-gradient(90deg, transparent, #C3B1E130, #F2B5D430, #A8D8C830, transparent)" }}
+      />
+
       <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-20">
-        {/* Top section: logo + nav + socials */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 mb-16">
-          {/* Logo + description */}
-          <div className="md:col-span-5 flex flex-col items-center md:items-start">
+        {/* Top: centered logo + description */}
+        <div className="text-center mb-14">
+          <div className="flex justify-center mb-5">
             <Image
               src="/logo.png"
               alt="EE Studio"
               width={240}
               height={170}
-              className="h-16 md:h-20 w-auto object-contain mb-5"
+              className="h-16 md:h-20 w-auto object-contain"
             />
-            <p className="text-sm text-[#777] font-light leading-relaxed max-w-xs text-center md:text-left">
-              Studio créatif, stratégique et opérationnel basé à Kinshasa. De la stratégie à l&apos;exécution.
-            </p>
           </div>
-
-          {/* Navigation */}
-          <div className="md:col-span-3 flex flex-col items-center md:items-start">
-            <p className="text-[11px] tracking-[0.2em] uppercase text-[#555] mb-5 font-medium">
-              Navigation
-            </p>
-            <div className="flex flex-col gap-3">
-              {NAV_LINKS.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="text-sm text-[#888] hover:text-[#F5F5F0] transition-colors duration-300 font-light"
-                  onMouseEnter={() => handleHover(link.label)}
-                  onMouseLeave={() =>
-                    setHoverColors((prev) => ({ ...prev, [link.label]: "" }))
-                  }
-                  style={{
-                    color: hoverColors[link.label] || undefined,
-                  }}
-                >
-                  {link.label}
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Socials + contact */}
-          <div className="md:col-span-4 flex flex-col items-center md:items-start">
-            <p className="text-[11px] tracking-[0.2em] uppercase text-[#555] mb-5 font-medium">
-              Suivez-nous
-            </p>
-            <div className="flex flex-col gap-3 mb-8">
-              {SOCIALS.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  className="text-sm text-[#888] hover:text-[#F5F5F0] transition-colors duration-300 font-light"
-                  onMouseEnter={() => handleHover(s.label)}
-                  onMouseLeave={() =>
-                    setHoverColors((prev) => ({ ...prev, [s.label]: "" }))
-                  }
-                  style={{
-                    color: hoverColors[s.label] || undefined,
-                  }}
-                >
-                  {s.label}
-                </a>
-              ))}
-            </div>
-            <p className="text-[11px] tracking-[0.2em] uppercase text-[#555] mb-3 font-medium">
-              Contact
-            </p>
-            <a
-              href="mailto:contact@ee-studio.info"
-              className="text-sm text-[#888] hover:text-[#F5F5F0] transition-colors duration-300 font-light"
-            >
-              contact@ee-studio.info
-            </a>
-          </div>
+          <p className="text-sm text-[#777] font-light leading-relaxed max-w-md mx-auto">
+            Studio créatif, stratégique et opérationnel basé à Kinshasa.
+            De la stratégie à l&apos;exécution.
+          </p>
         </div>
 
-        {/* Bottom bar */}
-        <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        {/* Middle: centered navigation */}
+        <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10 mb-10">
+          {NAV_LINKS.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="text-sm text-[#888] hover:text-[#F5F5F0] transition-colors duration-300 font-light tracking-wide"
+              onMouseEnter={() => handleHover(link.label)}
+              onMouseLeave={() =>
+                setHoverColors((prev) => ({ ...prev, [link.label]: "" }))
+              }
+              style={{
+                color: hoverColors[link.label] || undefined,
+              }}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+
+        {/* Socials: centered icons */}
+        <div className="flex items-center justify-center gap-4 mb-12">
+          {SOCIALS.map((s) => (
+            <a
+              key={s.label}
+              href={s.href}
+              aria-label={s.label}
+              className="w-10 h-10 rounded-full border border-white/8 flex items-center justify-center transition-all duration-300 hover:border-white/20 text-xs font-medium tracking-wider"
+              style={{ color: `${s.color}80` }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = s.color;
+                e.currentTarget.style.borderColor = `${s.color}40`;
+                e.currentTarget.style.boxShadow = `0 0 15px ${s.color}15`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = `${s.color}80`;
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+            >
+              {s.label[0]}
+            </a>
+          ))}
+        </div>
+
+        {/* Separator */}
+        <div
+          className="h-[1px] max-w-xs mx-auto mb-8"
+          style={{ background: "linear-gradient(90deg, transparent, #C3B1E120, transparent)" }}
+        />
+
+        {/* Bottom */}
+        <div className="text-center space-y-3">
           <p className="text-xs text-[#555] font-light">
             © {new Date().getFullYear()} EE Studio SARL — Tous droits réservés
           </p>
@@ -112,7 +110,7 @@ export default function Footer() {
             href="https://zypta.be"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-[#444] hover:text-[#888] transition-colors duration-300 tracking-wider"
+            className="inline-block text-xs text-[#444] hover:text-[#888] transition-colors duration-300 tracking-wider"
           >
             Developed by{" "}
             <span className="font-ethnocentric">ZYP</span>

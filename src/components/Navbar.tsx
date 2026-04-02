@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { NAV_LINKS, PASTEL_COLORS } from "@/lib/constants";
 
@@ -64,11 +65,17 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-20">
-        <a
-          href="#"
-          className="font-heading text-2xl font-bold tracking-wider text-[#F5F5F0]"
-        >
-          EE<span className="font-light">STUDIO</span>
+        <a href="#" className="flex items-center gap-3">
+          <Image
+            src="/logo.png"
+            alt="EE Studio"
+            width={40}
+            height={40}
+            className="w-9 h-9 object-contain"
+          />
+          <span className="font-heading text-xl font-bold tracking-wider text-[#F5F5F0]">
+            EE<span className="font-light">STUDIO</span>
+          </span>
         </a>
 
         {/* Desktop */}
@@ -87,7 +94,7 @@ export default function Navbar() {
         <button
           className="md:hidden text-[#F5F5F0]"
           onClick={() => setIsOpen(!isOpen)}
-          aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
+          aria-label={isOpen ? "Close menu" : "Open menu"}
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>

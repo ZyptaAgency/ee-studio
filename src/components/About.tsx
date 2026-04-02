@@ -4,26 +4,36 @@ import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import FloatingShapes from "./FloatingShapes";
+import { PASTEL_COLORS } from "@/lib/constants";
+import type { Shape } from "./FloatingShapes";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const KEYWORDS = [
-  "créatif",
-  "stratégique",
-  "opérationnel",
+  "creative",
+  "strategic",
+  "operational",
   "marketing",
-  "audiovisuelle",
-  "durable",
+  "audiovisual",
+  "sustainable",
 ];
 
 const PASTEL_MAP: Record<string, string> = {
-  créatif: "#F2B5D4",
-  stratégique: "#C3B1E1",
-  opérationnel: "#A8D8C8",
+  creative: "#F2B5D4",
+  strategic: "#C3B1E1",
+  operational: "#A8D8C8",
   marketing: "#FADADD",
-  audiovisuelle: "#B5D8EB",
-  durable: "#F5E6C8",
+  audiovisual: "#B5D8EB",
+  sustainable: "#F5E6C8",
 };
+
+const aboutShapes: Shape[] = [
+  { type: "ring", size: 90, x: "90%", y: "20%", color: PASTEL_COLORS[2], delay: 0, duration: 20 },
+  { type: "circle", size: 10, x: "5%", y: "60%", color: PASTEL_COLORS[3], delay: 2, duration: 14 },
+  { type: "diamond", size: 40, x: "85%", y: "70%", color: PASTEL_COLORS[0], delay: 1, duration: 22 },
+  { type: "cross", size: 25, x: "15%", y: "15%", color: PASTEL_COLORS[5], delay: 3, duration: 18 },
+];
 
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -54,7 +64,7 @@ export default function About() {
   }, []);
 
   const text =
-    "EE Studio est un studio créatif, stratégique et opérationnel basé à Kinshasa. Fondé par Lise-Laure, le studio accompagne les marques dans leur développement marketing, de la stratégie à la production de contenu audiovisuelle, avec une approche créative, opérationnel et durable.";
+    "EE Studio is a creative, strategic and operational studio based in Kinshasa. Founded by Lise-Laure, the studio supports brands in their marketing development, from strategy to audiovisual content production, with a creative, operational and sustainable approach.";
 
   const renderWords = () => {
     return text.split(" ").map((word, i) => {
@@ -89,7 +99,9 @@ export default function About() {
       ref={sectionRef}
       className="relative py-32 md:py-48 px-6 md:px-12"
     >
-      <div className="max-w-5xl mx-auto">
+      <FloatingShapes shapes={aboutShapes} opacity={0.06} />
+
+      <div className="relative z-10 max-w-5xl mx-auto">
         <motion.span
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -97,7 +109,7 @@ export default function About() {
           transition={{ duration: 0.6 }}
           className="text-xs font-body tracking-[0.3em] uppercase text-[#F5F5F0]/40 block mb-8"
         >
-          À propos
+          About
         </motion.span>
 
         <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-light leading-snug tracking-wide text-[#F5F5F0]/90">
@@ -113,17 +125,16 @@ export default function About() {
         >
           <div className="flex-1">
             <p className="text-base md:text-lg font-body font-light text-[#F5F5F0]/60 leading-relaxed">
-              Lise-Laure ne se contente pas de conseiller — elle exécute. Avec
-              une équipe intégrée et du matériel professionnel, EE Studio prend
-              en charge chaque étape, de la réflexion stratégique à la livraison
-              finale.
+              Lise-Laure doesn&apos;t just advise — she executes. With an
+              integrated team and professional equipment, EE Studio handles
+              every step, from strategic thinking to final delivery.
             </p>
           </div>
           <div className="flex-1">
             <p className="text-base md:text-lg font-body font-light text-[#F5F5F0]/60 leading-relaxed">
-              Le studio combine une expertise marketing pointue avec une vision
-              responsable, intégrant les enjeux ESG dans chaque projet pour un
-              impact qui dure.
+              The studio combines sharp marketing expertise with a responsible
+              vision, integrating ESG considerations into every project for
+              lasting impact.
             </p>
           </div>
         </motion.div>

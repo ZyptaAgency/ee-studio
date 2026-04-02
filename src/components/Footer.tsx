@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { Globe, ArrowUpRight, AtSign } from "lucide-react";
 import { NAV_LINKS } from "@/lib/constants";
 
@@ -10,13 +11,17 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
           {/* Logo + tagline */}
-          <div>
-            <span className="font-heading text-2xl font-bold tracking-wider">
-              EE<span className="font-light">STUDIO</span>
-            </span>
-            <p className="mt-4 font-body text-sm text-[#F5F5F0]/40 leading-relaxed max-w-xs">
-              Studio créatif, stratégique et opérationnel. De la stratégie à
-              l&apos;impact.
+          <div className="flex flex-col gap-4">
+            <Image
+              src="/logo.png"
+              alt="EE Studio"
+              width={60}
+              height={60}
+              className="w-14 h-14 object-contain"
+            />
+            <p className="font-body text-sm text-[#F5F5F0]/40 leading-relaxed max-w-xs">
+              Creative, strategic, and operational studio. From strategy to
+              impact.
             </p>
           </div>
 
@@ -41,7 +46,7 @@ export default function Footer() {
           {/* Social */}
           <div>
             <span className="text-xs font-body tracking-[0.2em] uppercase text-[#F5F5F0]/30 block mb-6">
-              Réseaux
+              Social
             </span>
             <div className="flex gap-4">
               {[
@@ -65,7 +70,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="font-body text-xs text-[#F5F5F0]/30">
-            © {new Date().getFullYear()} EE Studio SARL — Tous droits réservés
+            © {new Date().getFullYear()} EE Studio SARL — All rights reserved
           </p>
           <motion.p
             initial={{ opacity: 0 }}

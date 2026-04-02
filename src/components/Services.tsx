@@ -12,6 +12,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { SERVICES, PASTEL_COLORS } from "@/lib/constants";
+import FloatingShapes from "./FloatingShapes";
+import type { Shape } from "./FloatingShapes";
 
 const ICON_MAP: Record<string, LucideIcon> = {
   Video,
@@ -21,6 +23,13 @@ const ICON_MAP: Record<string, LucideIcon> = {
   Link,
   CalendarDays,
 };
+
+const servicesShapes: Shape[] = [
+  { type: "triangle", size: 70, x: "3%", y: "25%", color: PASTEL_COLORS[1], delay: 0, duration: 20 },
+  { type: "ring", size: 100, x: "92%", y: "60%", color: PASTEL_COLORS[4], delay: 2, duration: 24 },
+  { type: "circle", size: 8, x: "50%", y: "5%", color: PASTEL_COLORS[3], delay: 1, duration: 15 },
+  { type: "square", size: 25, x: "95%", y: "10%", color: PASTEL_COLORS[0], delay: 3, duration: 19, rotation: 30 },
+];
 
 export default function Services() {
   const [colorIndex, setColorIndex] = useState(0);
@@ -34,14 +43,16 @@ export default function Services() {
 
   return (
     <section id="services" className="relative py-32 md:py-48 px-6 md:px-12">
-      <div className="max-w-7xl mx-auto">
+      <FloatingShapes shapes={servicesShapes} opacity={0.06} />
+
+      <div className="relative z-10 max-w-7xl mx-auto">
         <motion.span
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-xs font-body tracking-[0.3em] uppercase text-[#F5F5F0]/40 block mb-4"
         >
-          Nos expertises
+          Our expertise
         </motion.span>
 
         <motion.h2
@@ -54,7 +65,6 @@ export default function Services() {
           Services
         </motion.h2>
 
-        {/* Creative asymmetric grid */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
           {SERVICES.map((service, i) => {
             const Icon = ICON_MAP[service.icon];
@@ -91,13 +101,23 @@ export default function Services() {
                     borderColor: isHovered ? `${pastel}40` : undefined,
                   }}
                 >
-                  {/* Pastel glow on hover */}
                   <div
                     className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                     style={{
                       background: `radial-gradient(circle at 30% 30%, ${pastel}08 0%, transparent 70%)`,
                     }}
                   />
+
+                  {/* Decorative shape in corner */}
+                  <motion.svg
+                    className="absolute -top-4 -right-4 opacity-0 group-hover:opacity-[0.08] transition-opacity duration-700"
+                    width="120"
+                    height="120"
+                    viewBox="0 0 120 120"
+                  >
+                    <circle cx="60" cy="60" r="55" fill="none" stroke={pastel} strokeWidth="1.5" />
+                    <circle cx="60" cy="60" r="35" fill="none" stroke={pastel} strokeWidth="1" />
+                  </motion.svg>
 
                   <div className="relative z-10">
                     <div

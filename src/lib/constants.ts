@@ -9,79 +9,79 @@ export const PASTEL_COLORS = [
 
 export const SERVICES = [
   {
-    title: "Production Audiovisuelle",
+    title: "Video Production",
     description:
-      "Shooting photo, tournage vidéo, captation événementielle, Reels/TikTok, direction artistique.",
+      "Photo shoots, video production, event coverage, Reels/TikTok content, art direction.",
     icon: "Video",
   },
   {
-    title: "Création Visuelle",
+    title: "Visual Creation",
     description:
-      "Infographie, identité visuelle, direction artistique, montage vidéo, branding complet.",
+      "Graphic design, visual identity, art direction, video editing, full branding.",
     icon: "Palette",
   },
   {
-    title: "Marketing Stratégique",
+    title: "Strategic Marketing",
     description:
-      "Positionnement de marque, stratégie de communication online & offline, campagnes, activation terrain.",
+      "Brand positioning, online & offline communication strategy, campaigns, field activation.",
     icon: "Target",
   },
   {
-    title: "Consulting ESG & Développement Durable",
+    title: "ESG & Sustainability Consulting",
     description:
-      "Intégration ESG, communication responsable, accompagnement durable.",
+      "ESG integration, responsible communication, sustainable development support.",
     icon: "Leaf",
   },
   {
     title: "Facilitation & Liaison",
     description:
-      "Coordination d'équipes, mise en relation, suivi de projet, simplification des processus.",
+      "Team coordination, networking, project management, process simplification.",
     icon: "Link",
   },
   {
-    title: "Événementiel",
+    title: "Events",
     description:
-      "Conseil stratégique, captation, contenu avant/pendant/après événement.",
+      "Strategic consulting, live coverage, content before/during/after events.",
     icon: "CalendarDays",
   },
 ] as const;
 
 export const DIFFERENTIATORS = [
   {
-    title: "Approche 360°",
-    description: "De la stratégie à la création, jusqu'au terrain.",
+    title: "360° Approach",
+    description: "From strategy to creation, all the way to the field.",
     stat: "360°",
   },
   {
-    title: "Autonomie Audiovisuelle",
-    description: "Matériel professionnel intégré au studio.",
+    title: "In-House Production",
+    description: "Professional equipment fully integrated in-house.",
     stat: "100%",
   },
   {
-    title: "Double Compétence",
-    description: "Marketing & ESG réunis dans une même vision.",
-    stat: "2 en 1",
+    title: "Dual Expertise",
+    description: "Marketing & ESG united in a single vision.",
+    stat: "2 in 1",
   },
   {
-    title: "Exécution Concrète",
-    description: "Pas seulement du conseil — on produit, on livre.",
+    title: "Real Execution",
+    description: "Not just advice — we produce, we deliver.",
     stat: "Action",
   },
 ] as const;
 
 export const NAV_LINKS = [
-  { label: "À propos", href: "#about" },
+  { label: "About", href: "#about" },
   { label: "Services", href: "#services" },
   { label: "Portfolio", href: "#portfolio" },
   { label: "Contact", href: "#contact" },
 ] as const;
 
 export const MARQUEE_WORDS = [
-  "STRATÉGIE",
-  "CRÉATION",
-  "CONTENU",
+  "STRATEGY",
+  "CREATION",
+  "CONTENT",
   "IMPACT",
-  "DURABLE",
+  "SUSTAINABLE",
   "MARKETING",
   "VISION",
 ];

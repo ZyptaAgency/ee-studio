@@ -30,7 +30,7 @@ export default function ScrollProgress() {
       aria-valuenow={Math.round(width)}
       aria-valuemin={0}
       aria-valuemax={100}
-      aria-label="Progression de la page"
+      aria-label="Page scroll progress"
     />
   );
 }

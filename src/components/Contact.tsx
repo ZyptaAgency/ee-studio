@@ -4,6 +4,14 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Phone, Send } from "lucide-react";
 import { PASTEL_COLORS } from "@/lib/constants";
+import FloatingShapes from "./FloatingShapes";
+import type { Shape } from "./FloatingShapes";
+
+const contactShapes: Shape[] = [
+  { type: "ring", size: 100, x: "88%", y: "15%", color: PASTEL_COLORS[2], delay: 0, duration: 22 },
+  { type: "cross", size: 30, x: "5%", y: "75%", color: PASTEL_COLORS[0], delay: 2, duration: 17 },
+  { type: "circle", size: 8, x: "60%", y: "85%", color: PASTEL_COLORS[5], delay: 1, duration: 15 },
+];
 
 export default function Contact() {
   const [focused, setFocused] = useState<string | null>(null);
@@ -22,7 +30,9 @@ export default function Contact() {
 
   return (
     <section id="contact" className="relative py-32 md:py-48 px-6 md:px-12">
-      <div className="max-w-5xl mx-auto">
+      <FloatingShapes shapes={contactShapes} opacity={0.06} />
+
+      <div className="relative z-10 max-w-5xl mx-auto">
         <motion.span
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -39,7 +49,7 @@ export default function Contact() {
           transition={{ duration: 0.8 }}
           className="font-heading text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-8"
         >
-          Travaillons ensemble
+          Let&apos;s work together
         </motion.h2>
 
         <motion.p
@@ -49,11 +59,10 @@ export default function Contact() {
           transition={{ delay: 0.2 }}
           className="font-body text-lg font-light text-[#F5F5F0]/50 mb-16 max-w-2xl"
         >
-          Une idée, un projet, une collaboration ? Parlons-en.
+          An idea, a project, a collaboration? Let&apos;s talk about it.
         </motion.p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
-          {/* Form */}
           <motion.form
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -65,52 +74,49 @@ export default function Contact() {
             <div>
               <input
                 type="text"
-                placeholder="Votre nom"
+                placeholder="Your name"
                 className={inputClass}
                 style={{
-                  borderColor:
-                    focused === "name" ? hoverColor : undefined,
+                  borderColor: focused === "name" ? hoverColor : undefined,
                 }}
                 onFocus={() => {
                   setFocused("name");
                   nextColor();
                 }}
                 onBlur={() => setFocused(null)}
-                aria-label="Votre nom"
+                aria-label="Your name"
               />
             </div>
             <div>
               <input
                 type="email"
-                placeholder="Votre email"
+                placeholder="Your email"
                 className={inputClass}
                 style={{
-                  borderColor:
-                    focused === "email" ? hoverColor : undefined,
+                  borderColor: focused === "email" ? hoverColor : undefined,
                 }}
                 onFocus={() => {
                   setFocused("email");
                   nextColor();
                 }}
                 onBlur={() => setFocused(null)}
-                aria-label="Votre email"
+                aria-label="Your email"
               />
             </div>
             <div>
               <textarea
-                placeholder="Votre message"
+                placeholder="Your message"
                 rows={4}
                 className={`${inputClass} resize-none`}
                 style={{
-                  borderColor:
-                    focused === "message" ? hoverColor : undefined,
+                  borderColor: focused === "message" ? hoverColor : undefined,
                 }}
                 onFocus={() => {
                   setFocused("message");
                   nextColor();
                 }}
                 onBlur={() => setFocused(null)}
-                aria-label="Votre message"
+                aria-label="Your message"
               />
             </div>
             <motion.button
@@ -124,12 +130,11 @@ export default function Contact() {
                 borderColor: `${hoverColor}40`,
               }}
             >
-              Envoyer
+              Send
               <Send size={16} />
             </motion.button>
           </motion.form>
 
-          {/* Coordinates */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -165,10 +170,10 @@ export default function Contact() {
 
             <div>
               <span className="text-xs font-body tracking-[0.2em] uppercase text-[#F5F5F0]/30 block mb-3">
-                Localisation
+                Location
               </span>
               <p className="font-body text-lg text-[#F5F5F0]/80">
-                Kinshasa, République Démocratique du Congo
+                Kinshasa, Democratic Republic of the Congo
               </p>
             </div>
           </motion.div>

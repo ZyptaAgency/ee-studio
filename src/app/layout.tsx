@@ -15,33 +15,33 @@ const sora = Sora({
 });
 
 export const metadata: Metadata = {
-  title: "EE Studio — Stratégie. Création. Impact.",
+  title: "EE Studio — Strategy. Creation. Impact.",
   description:
-    "EE Studio accompagne les marques dans leur développement marketing, de la stratégie à la production de contenu, avec une approche créative, opérationnelle et durable. Basé à Kinshasa, RDC.",
+    "EE Studio supports brands in their marketing development, from strategy to content production, with a creative, operational, and sustainable approach. Based in Kinshasa, DRC.",
   keywords: [
     "EE Studio",
     "marketing",
-    "production audiovisuelle",
-    "création visuelle",
-    "consulting ESG",
+    "video production",
+    "visual creation",
+    "ESG consulting",
     "Kinshasa",
-    "agence créative",
-    "stratégie de marque",
+    "creative agency",
+    "brand strategy",
   ],
   openGraph: {
-    title: "EE Studio — Stratégie. Création. Impact.",
+    title: "EE Studio — Strategy. Creation. Impact.",
     description:
-      "Studio créatif, stratégique et opérationnel basé à Kinshasa. Marketing, production audiovisuelle, création visuelle et consulting en développement durable.",
+      "Creative, strategic, and operational studio based in Kinshasa. Marketing, video production, visual creation, and sustainability consulting.",
     type: "website",
-    locale: "fr_FR",
+    locale: "en_US",
     url: "https://ee-studio.info",
     siteName: "EE Studio",
   },
   twitter: {
     card: "summary_large_image",
-    title: "EE Studio — Stratégie. Création. Impact.",
+    title: "EE Studio — Strategy. Creation. Impact.",
     description:
-      "Studio créatif, stratégique et opérationnel basé à Kinshasa.",
+      "Creative, strategic, and operational studio based in Kinshasa.",
   },
 };
 
@@ -51,7 +51,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className={`${outfit.variable} ${sora.variable}`}>
+    <html lang="en" className={`${outfit.variable} ${sora.variable}`}>
       <body className="antialiased">
         <div className="grain-overlay" aria-hidden="true" />
         {children}

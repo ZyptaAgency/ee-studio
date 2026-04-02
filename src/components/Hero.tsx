@@ -9,9 +9,11 @@ import FloatingShapes from "./FloatingShapes";
 const PASTEL_ACCENTS = ["#F2B5D4", "#C3B1E1", "#A8D8C8", "#B5D8EB", "#FADADD", "#F5E6C8"];
 
 export default function Hero() {
+  const { random } = usePastelRotation();
   const { next } = usePastelRotation();
   const { t } = useI18n();
   const [ctaColor, setCtaColor] = useState("#999");
+  const [letterColors, setLetterColors] = useState<Record<number, string>>({});
 
   const titleLetters = "EE STUDIO".split("");
 
@@ -27,7 +29,8 @@ export default function Hero() {
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-        className="mb-6 md:mb-10"
+        className="mb-6 md:mb-10 relative"
+        style={{ marginRight: "-6%" }}
       >
         <Image
           src="/logo.png"
@@ -50,9 +53,15 @@ export default function Hero() {
               duration: 0.7,
               ease: [0.25, 0.46, 0.45, 0.94],
             }}
-            className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-['Outfit'] tracking-tight cursor-default transition-colors duration-300"
-            style={{ fontWeight: 900 }}
-            whileHover={{ color: PASTEL_ACCENTS[i % PASTEL_ACCENTS.length], scale: 1.05 }}
+            className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-['Outfit'] tracking-tight cursor-default"
+            style={{
+              fontWeight: 900,
+              color: letterColors[i] || "#F5F5F0",
+              transition: "color 0.05s ease-out, transform 0.15s ease-out",
+              transform: letterColors[i] ? "scale(1.08)" : "scale(1)",
+            }}
+            onMouseEnter={() => setLetterColors((p) => ({ ...p, [i]: random() }))}
+            onMouseLeave={() => setLetterColors((p) => { const c = { ...p }; delete c[i]; return c; })}
           >
             {letter === " " ? "\u00A0" : letter}
           </motion.span>

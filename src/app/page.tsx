@@ -11,6 +11,7 @@ import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Services from "@/components/Services";
 import Differentiators from "@/components/Differentiators";
+import Consulting from "@/components/Consulting";
 import Portfolio from "@/components/Portfolio";
 import Marquee from "@/components/Marquee";
 import Contact from "@/components/Contact";
@@ -35,6 +36,7 @@ export default function Home() {
         <About />
         <Services />
         <Differentiators />
+        <Consulting />
         <Portfolio />
         <Marquee />
         <Contact />

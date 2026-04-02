@@ -14,6 +14,7 @@ export const TRANSLATIONS = {
     nav: {
       about: "About",
       services: "Services",
+      consulting: "Consulting",
       portfolio: "Portfolio",
       contact: "Contact",
     },
@@ -98,6 +99,55 @@ export const TRANSLATIONS = {
       social: "Social",
       rights: "All rights reserved",
     },
+    consulting: {
+      label: "Marketing Consulting",
+      title: "Marketing Consulting",
+      subtitle: "Tailored strategic support to grow your brand, optimize your performance and make smarter decisions.",
+      services: [
+        {
+          title: "Strategic Coaching",
+          description: "One-on-one sessions to define your brand positioning, communication roadmap and growth strategy.",
+          icon: "Compass",
+        },
+        {
+          title: "Data Analysis & Insights",
+          description: "Deep analysis of your marketing data — campaigns, audiences, conversions — to turn numbers into actionable decisions.",
+          icon: "BarChart3",
+        },
+        {
+          title: "Brand Audit",
+          description: "Full assessment of your brand identity, messaging, and market positioning with clear recommendations.",
+          icon: "Search",
+        },
+        {
+          title: "Digital Strategy",
+          description: "Custom digital roadmap covering SEO, social media, content strategy and paid advertising.",
+          icon: "Globe",
+        },
+        {
+          title: "Campaign Management",
+          description: "End-to-end campaign planning, execution and optimization across all channels.",
+          icon: "Megaphone",
+        },
+        {
+          title: "Training & Workshops",
+          description: "Hands-on workshops for your team on marketing tools, content creation, analytics and best practices.",
+          icon: "GraduationCap",
+        },
+      ],
+      form: {
+        title: "Request more information",
+        subtitle: "Tell us about your needs and we'll get back to you within 24 hours.",
+        name: "Full name",
+        email: "Email address",
+        company: "Company / Organization",
+        service: "Service of interest",
+        servicePlaceholder: "Select a service",
+        message: "Tell us about your project",
+        send: "Request Info",
+        success: "Thank you! We'll be in touch soon.",
+      },
+    },
     cookies: {
       text: "This site uses cookies to enhance your experience.",
       accept: "Accept",
@@ -108,6 +158,7 @@ export const TRANSLATIONS = {
     nav: {
       about: "À propos",
       services: "Services",
+      consulting: "Consultance",
       portfolio: "Portfolio",
       contact: "Contact",
     },
@@ -191,6 +242,55 @@ export const TRANSLATIONS = {
       navigation: "Navigation",
       social: "Réseaux",
       rights: "Tous droits réservés",
+    },
+    consulting: {
+      label: "Consultance Marketing",
+      title: "Consultance Marketing",
+      subtitle: "Un accompagnement stratégique sur mesure pour développer votre marque, optimiser vos performances et prendre de meilleures décisions.",
+      services: [
+        {
+          title: "Accompagnement Stratégique",
+          description: "Sessions individuelles pour définir votre positionnement, feuille de route communication et stratégie de croissance.",
+          icon: "Compass",
+        },
+        {
+          title: "Analyse de Données & Insights",
+          description: "Analyse approfondie de vos données marketing — campagnes, audiences, conversions — pour transformer les chiffres en décisions.",
+          icon: "BarChart3",
+        },
+        {
+          title: "Audit de Marque",
+          description: "Évaluation complète de votre identité de marque, messaging et positionnement marché avec recommandations claires.",
+          icon: "Search",
+        },
+        {
+          title: "Stratégie Digitale",
+          description: "Feuille de route digitale sur mesure couvrant SEO, réseaux sociaux, stratégie de contenu et publicité payante.",
+          icon: "Globe",
+        },
+        {
+          title: "Gestion de Campagnes",
+          description: "Planification, exécution et optimisation de campagnes de bout en bout sur tous les canaux.",
+          icon: "Megaphone",
+        },
+        {
+          title: "Formation & Ateliers",
+          description: "Ateliers pratiques pour votre équipe sur les outils marketing, création de contenu, analytics et bonnes pratiques.",
+          icon: "GraduationCap",
+        },
+      ],
+      form: {
+        title: "Demander plus d'informations",
+        subtitle: "Parlez-nous de vos besoins et nous vous recontacterons sous 24 heures.",
+        name: "Nom complet",
+        email: "Adresse email",
+        company: "Entreprise / Organisation",
+        service: "Service souhaité",
+        servicePlaceholder: "Sélectionner un service",
+        message: "Décrivez votre projet",
+        send: "Demander des infos",
+        success: "Merci ! Nous vous recontacterons très vite.",
+      },
     },
     cookies: {
       text: "Ce site utilise des cookies pour améliorer votre expérience.",

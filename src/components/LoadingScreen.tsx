@@ -138,81 +138,82 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
         />
       ))}
 
-      {/* Logo with pulse glow — offset to align 2nd dot as visual center */}
-      <motion.div
-        className="relative z-10"
-        style={{ marginRight: "-6%" }}
-        initial={{ opacity: 0, scale: 0.6, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-      >
-        {/* Glow behind logo */}
+      {/* Centered column: logo + tagline + progress bar — all same width */}
+      <div className="relative z-10 flex flex-col items-center w-44 md:w-60">
+        {/* Logo with pulse glow */}
         <motion.div
-          className="absolute inset-0 -m-8 rounded-full pointer-events-none"
-          style={{ background: "radial-gradient(circle, #C3B1E120 0%, transparent 70%)" }}
-          animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <Image
-          src="/logo.png"
-          alt="EE Studio"
-          width={430}
-          height={304}
-          className="w-44 md:w-60 h-auto object-contain relative z-10"
-          priority
-        />
-      </motion.div>
+          className="relative w-full"
+          initial={{ opacity: 0, scale: 0.6, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <motion.div
+            className="absolute inset-0 -m-8 rounded-full pointer-events-none"
+            style={{ background: "radial-gradient(circle, #C3B1E120 0%, transparent 70%)" }}
+            animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <Image
+            src="/logo.png"
+            alt="EE Studio"
+            width={430}
+            height={304}
+            className="w-full h-auto object-contain relative z-10"
+            priority
+          />
+        </motion.div>
 
-      {/* Tagline */}
-      <motion.div
-        className="relative z-10 mt-8 flex items-center gap-2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.6, duration: 0.6 }}
-      >
-        {["Stratégie", "Création", "Impact"].map((word, i) => (
-          <motion.span
-            key={word}
-            className="text-xs md:text-sm font-light tracking-[0.2em] uppercase"
-            style={{ color: PASTELS[i] }}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 0.7, y: 0 }}
-            transition={{ delay: 0.8 + i * 0.2, duration: 0.5 }}
-          >
-            {word}
-            {i < 2 && (
-              <motion.span
-                className="inline-block w-1 h-1 rounded-full mx-2 align-middle"
-                style={{ backgroundColor: PASTELS[i + 1] }}
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 1 + i * 0.2, duration: 0.3 }}
-              />
-            )}
-          </motion.span>
-        ))}
-      </motion.div>
-
-      {/* Progress bar with animated gradient */}
-      <motion.div
-        className="relative z-10 mt-10 w-40 md:w-52 h-[3px] rounded-full overflow-hidden"
-        style={{ backgroundColor: "rgba(255,255,255,0.06)" }}
-        initial={{ opacity: 0, scaleX: 0.8 }}
-        animate={{ opacity: 1, scaleX: 1 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
-      >
+        {/* Tagline */}
         <motion.div
-          className="h-full rounded-full"
-          style={{
-            background: "linear-gradient(90deg, #F2B5D4, #C3B1E1, #A8D8C8, #B5D8EB, #F5E6C8)",
-            backgroundSize: "200% 100%",
-          }}
-          initial={{ width: "0%" }}
-          animate={{ width: "100%" }}
-          transition={{ delay: 0.8, duration: 2, ease: [0.25, 0.46, 0.45, 0.94] }}
-          onAnimationComplete={onComplete}
-        />
-      </motion.div>
+          className="mt-8 flex items-center justify-center gap-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6, duration: 0.6 }}
+        >
+          {["Stratégie", "Création", "Impact"].map((word, i) => (
+            <motion.span
+              key={word}
+              className="text-[10px] md:text-xs font-light tracking-[0.15em] uppercase"
+              style={{ color: PASTELS[i] }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 0.7, y: 0 }}
+              transition={{ delay: 0.8 + i * 0.2, duration: 0.5 }}
+            >
+              {word}
+              {i < 2 && (
+                <motion.span
+                  className="inline-block w-1 h-1 rounded-full mx-1.5 align-middle"
+                  style={{ backgroundColor: PASTELS[i + 1] }}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 1 + i * 0.2, duration: 0.3 }}
+                />
+              )}
+            </motion.span>
+          ))}
+        </motion.div>
+
+        {/* Progress bar — aligned with the 3 dots (rectangle area of logo) */}
+        <motion.div
+          className="mt-8 h-[3px] rounded-full overflow-hidden"
+          style={{ backgroundColor: "rgba(255,255,255,0.06)", width: "86%", marginRight: "4%" }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+        >
+          <motion.div
+            className="h-full rounded-full"
+            style={{
+              background: "linear-gradient(90deg, #F2B5D4, #C3B1E1, #A8D8C8, #B5D8EB, #F5E6C8)",
+              backgroundSize: "200% 100%",
+            }}
+            initial={{ width: "0%" }}
+            animate={{ width: "100%" }}
+            transition={{ delay: 0.8, duration: 2, ease: [0.25, 0.46, 0.45, 0.94] }}
+            onAnimationComplete={onComplete}
+          />
+        </motion.div>
+      </div>
 
       {/* Animated corner accents */}
       <motion.div

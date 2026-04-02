@@ -30,7 +30,6 @@ export default function Hero() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
         className="mb-6 md:mb-10 relative"
-        style={{ marginRight: "-6%" }}
       >
         <Image
           src="/logo.png"

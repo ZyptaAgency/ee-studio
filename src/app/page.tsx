@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { I18nProvider } from "@/lib/i18n";
 
 import Navbar from "@/components/Navbar";
 import ScrollProgress from "@/components/ScrollProgress";
@@ -14,6 +15,7 @@ import Portfolio from "@/components/Portfolio";
 import Marquee from "@/components/Marquee";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import CookieBanner from "@/components/CookieBanner";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -25,7 +27,7 @@ export default function Home() {
   }, []);
 
   return (
-    <>
+    <I18nProvider>
       <ScrollProgress />
       <Navbar />
       <main>
@@ -38,6 +40,7 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
-    </>
+      <CookieBanner />
+    </I18nProvider>
   );
 }

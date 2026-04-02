@@ -4,7 +4,9 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
-import { NAV_LINKS, PASTEL_COLORS } from "@/lib/constants";
+import { PASTEL_COLORS } from "@/lib/constants";
+import { useI18n } from "@/lib/i18n";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 function NavLink({
   href,
@@ -20,7 +22,7 @@ function NavLink({
   return (
     <a
       href={href}
-      className="relative text-sm font-body tracking-wide text-[#F5F5F0]/70 hover:text-[#F5F5F0] transition-colors"
+      className="relative text-[13px] font-body tracking-widest uppercase text-[#F5F5F0]/70 hover:text-[#F5F5F0] transition-colors"
       onMouseEnter={() => setColor(getColor())}
       onMouseLeave={() => setColor("transparent")}
     >
@@ -37,9 +39,17 @@ function NavLink({
 }
 
 export default function Navbar() {
+  const { t } = useI18n();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hoverIndex, setHoverIndex] = useState(0);
+
+  const links = [
+    { label: t.nav.about, href: "#about" },
+    { label: t.nav.services, href: "#services" },
+    { label: t.nav.portfolio, href: "#portfolio" },
+    { label: t.nav.contact, href: "#contact" },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -69,18 +79,17 @@ export default function Navbar() {
           <Image
             src="/logo.png"
             alt="EE Studio"
-            width={40}
-            height={40}
-            className="w-9 h-9 object-contain"
+            width={36}
+            height={36}
+            className="w-8 h-8 object-contain"
           />
-          <span className="font-heading text-xl font-bold tracking-wider text-[#F5F5F0]">
-            EE<span className="font-light">STUDIO</span>
+          <span className="font-heading text-lg font-bold tracking-widest text-[#F5F5F0]">
+            EE<span className="font-light"> STUDIO</span>
           </span>
         </a>
 
-        {/* Desktop */}
-        <div className="hidden md:flex items-center gap-10">
-          {NAV_LINKS.map((link) => (
+        <div className="hidden md:flex items-center gap-8">
+          {links.map((link) => (
             <NavLink
               key={link.href}
               href={link.href}
@@ -88,19 +97,21 @@ export default function Navbar() {
               getColor={getNextPastel}
             />
           ))}
+          <LanguageSwitcher />
         </div>
 
-        {/* Mobile toggle */}
-        <button
-          className="md:hidden text-[#F5F5F0]"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label={isOpen ? "Close menu" : "Open menu"}
-        >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="md:hidden flex items-center gap-4">
+          <LanguageSwitcher />
+          <button
+            className="text-[#F5F5F0]"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? "Close menu" : "Open menu"}
+          >
+            {isOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
       </div>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -109,15 +120,15 @@ export default function Navbar() {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden bg-[#0A0A0A]/95 backdrop-blur-lg border-t border-white/5"
           >
-            <div className="px-6 py-8 flex flex-col gap-6">
-              {NAV_LINKS.map((link, i) => (
+            <div className="px-6 py-8 flex flex-col gap-5">
+              {links.map((link, i) => (
                 <motion.a
                   key={link.href}
                   href={link.href}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.1 }}
-                  className="text-lg font-body text-[#F5F5F0]/80 hover:text-[#F5F5F0]"
+                  className="text-base font-body tracking-wider uppercase text-[#F5F5F0]/80 hover:text-[#F5F5F0]"
                   onClick={() => setIsOpen(false)}
                 >
                   {link.label}

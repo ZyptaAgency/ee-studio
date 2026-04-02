@@ -6,6 +6,7 @@ import Image from "next/image";
 import gsap from "gsap";
 import FloatingShapes from "./FloatingShapes";
 import { PASTEL_COLORS } from "@/lib/constants";
+import { useI18n } from "@/lib/i18n";
 import type { Shape } from "./FloatingShapes";
 
 const heroShapes: Shape[] = [
@@ -20,11 +21,11 @@ const heroShapes: Shape[] = [
 ];
 
 export default function Hero() {
+  const { t } = useI18n();
   const titleRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
     if (!titleRef.current) return;
-
     const chars = titleRef.current.querySelectorAll(".char");
     gsap.fromTo(
       chars,
@@ -41,38 +42,34 @@ export default function Hero() {
     );
   }, []);
 
-  const title = "EE STUDIO";
-
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A] via-[#0A0A0A] to-[#111111]" />
-
       <FloatingShapes shapes={heroShapes} opacity={0.08} />
 
       <div className="relative z-10 text-center px-6 flex flex-col items-center">
-        {/* Logo */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-8 md:mb-12"
+          className="mb-6 md:mb-10"
         >
           <Image
             src="/logo.png"
             alt="EE Studio Logo"
-            width={180}
-            height={180}
-            className="w-32 h-32 md:w-44 md:h-44 lg:w-52 lg:h-52 object-contain"
+            width={200}
+            height={200}
+            className="w-28 h-28 md:w-40 md:h-40 object-contain"
             priority
           />
         </motion.div>
 
         <h1
           ref={titleRef}
-          className="font-heading text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-[0.15em] leading-none"
+          className="font-heading text-4xl sm:text-6xl md:text-7xl font-bold tracking-[0.12em] leading-none"
           style={{ perspective: "1000px" }}
         >
-          {title.split("").map((char, i) => (
+          {"EE STUDIO".split("").map((char, i) => (
             <span
               key={i}
               className="char inline-block opacity-0"
@@ -87,9 +84,9 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.5, duration: 1, ease: "easeOut" }}
-          className="mt-6 md:mt-8 text-lg md:text-2xl font-body font-light tracking-[0.3em] text-[#F5F5F0]/60"
+          className="mt-5 md:mt-6 text-base md:text-lg font-body font-light tracking-[0.25em] text-[#F5F5F0]/50"
         >
-          Strategy. Creation. Impact.
+          {t.hero.subtitle}
         </motion.p>
 
         <motion.a
@@ -97,10 +94,10 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2.2, duration: 0.8 }}
-          className="inline-block mt-16 md:mt-24 text-sm font-body tracking-[0.2em] text-[#F5F5F0]/40 hover:text-[#F5F5F0] transition-all duration-300 group"
+          className="inline-block mt-12 md:mt-16 text-sm font-body tracking-[0.15em] text-[#F5F5F0]/40 hover:text-[#F5F5F0] transition-all duration-300 group"
         >
           <span className="relative">
-            Discover
+            {t.hero.cta}
             <span className="inline-block ml-2 transition-transform duration-300 group-hover:translate-x-1">
               →
             </span>

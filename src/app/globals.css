@@ -60,6 +60,15 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Supernova', serif;
 }
 
+.zypta-brand {
+  font-family: 'Ethnocentric Rg', 'Ethnocentric', sans-serif;
+  background: linear-gradient(135deg, #ff6b35, #c84bff, #00d4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.05em;
+}
+
 .noise-overlay {
   position: fixed;
   top: 0;

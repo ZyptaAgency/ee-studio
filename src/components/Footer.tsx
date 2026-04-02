@@ -139,9 +139,8 @@ export default function Footer() {
             className="inline-block text-[11px] hover:opacity-80 transition-opacity duration-300 tracking-wider"
           >
             <span className="text-[#555]">Developed by </span>
-            <span className="font-ethnocentric text-[#F5F5F0]">ZYP</span>
-            <span className="font-supernova text-[#C3B1E1]">TA</span>
-            <span className="font-supernova text-[#C3B1E1]">.be</span>
+            <span className="zypta-brand">Zypta</span>
+            <span className="text-[#555]">.be</span>
           </a>
         </div>
       </div>

@@ -1,22 +1,28 @@
 "use client";
 import { motion } from "framer-motion";
 import { usePastelRotation } from "@/hooks/usePastelRotation";
+import { useI18n } from "@/lib/i18n";
 import { useState } from "react";
 import Image from "next/image";
 import FloatingShapes from "./FloatingShapes";
 
+const PASTEL_ACCENTS = ["#F2B5D4", "#C3B1E1", "#A8D8C8", "#B5D8EB", "#FADADD", "#F5E6C8"];
+
 export default function Hero() {
   const { next } = usePastelRotation();
+  const { t } = useI18n();
   const [ctaColor, setCtaColor] = useState("#999");
 
   const titleLetters = "EE STUDIO".split("");
-  const subtitle = "Stratégie. Création. Impact.";
 
   return (
     <section className="relative h-screen flex flex-col items-center justify-center overflow-hidden px-6">
-      <FloatingShapes count={12} seed={1} />
+      <FloatingShapes count={16} seed={1} />
 
-      {/* Logo */}
+      <div className="absolute top-20 left-10 w-[300px] h-[300px] rounded-full opacity-[0.04] blur-3xl pointer-events-none" style={{ background: "#C3B1E1" }} />
+      <div className="absolute bottom-32 right-16 w-[250px] h-[250px] rounded-full opacity-[0.04] blur-3xl pointer-events-none" style={{ background: "#F2B5D4" }} />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-[0.03] blur-3xl pointer-events-none" style={{ background: "#A8D8C8" }} />
+
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -33,7 +39,6 @@ export default function Hero() {
         />
       </motion.div>
 
-      {/* Big title */}
       <div className="flex items-center justify-center gap-1 md:gap-2 mb-6">
         {titleLetters.map((letter, i) => (
           <motion.span
@@ -45,25 +50,32 @@ export default function Hero() {
               duration: 0.7,
               ease: [0.25, 0.46, 0.45, 0.94],
             }}
-            className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-['Outfit'] tracking-tight"
+            className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-['Outfit'] tracking-tight cursor-default transition-colors duration-300"
             style={{ fontWeight: 900 }}
+            whileHover={{ color: PASTEL_ACCENTS[i % PASTEL_ACCENTS.length], scale: 1.05 }}
           >
             {letter === " " ? "\u00A0" : letter}
           </motion.span>
         ))}
       </div>
 
-      {/* Subtitle with pastel dot separator */}
       <motion.p
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.2, duration: 0.8 }}
-        className="text-lg md:text-xl text-[#BBB] font-light tracking-[0.2em] mb-16 text-center"
+        className="text-lg md:text-xl font-light tracking-[0.2em] mb-16 text-center"
       >
-        {subtitle}
+        {t.hero.subtitle.split(". ").map((part, i, arr) => (
+          <span key={i}>
+            <span className="text-[#BBB]">{part.replace(".", "")}</span>
+            {i < arr.length - 1 && (
+              <span className="inline-block mx-2 w-1.5 h-1.5 rounded-full align-middle" style={{ backgroundColor: PASTEL_ACCENTS[i] }} />
+            )}
+            {i === arr.length - 1 && "."}
+          </span>
+        ))}
       </motion.p>
 
-      {/* CTA */}
       <motion.a
         href="#about"
         initial={{ opacity: 0 }}
@@ -73,25 +85,26 @@ export default function Hero() {
         style={{
           color: ctaColor === "#999" ? "#BBB" : ctaColor,
           borderColor: ctaColor === "#999" ? "rgba(255,255,255,0.1)" : `${ctaColor}50`,
+          boxShadow: ctaColor !== "#999" ? `0 0 30px ${ctaColor}18` : "none",
         }}
         onMouseEnter={() => setCtaColor(next())}
         onMouseLeave={() => setCtaColor("#999")}
       >
-        Découvrir
+        {t.hero.cta}
       </motion.a>
 
-      {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.4 }}
         transition={{ delay: 2.5, duration: 1 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
-        <span className="text-[10px] tracking-[0.2em] uppercase text-[#666]">Scroll</span>
+        <span className="text-[10px] tracking-[0.2em] uppercase text-[#666]">{t.hero.scroll}</span>
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-          className="w-[1px] h-8 bg-gradient-to-b from-[#C3B1E1]/40 to-transparent"
+          className="w-[1px] h-8"
+          style={{ background: "linear-gradient(to bottom, #C3B1E1, #F2B5D4, transparent)" }}
         />
       </motion.div>
     </section>

@@ -1,12 +1,14 @@
 "use client";
 import { motion } from "framer-motion";
 import { usePastelRotation } from "@/hooks/usePastelRotation";
+import { useI18n } from "@/lib/i18n";
 import { useState } from "react";
 import { Mail, MessageCircle, MapPin } from "lucide-react";
 import FloatingShapes from "./FloatingShapes";
 
 export default function Contact() {
   const { next } = usePastelRotation();
+  const { t } = useI18n();
   const [btnColor, setBtnColor] = useState("#333");
   const [focusColors, setFocusColors] = useState<Record<string, string>>({});
 
@@ -20,7 +22,10 @@ export default function Contact() {
 
   return (
     <section id="contact" className="relative py-28 md:py-40 overflow-hidden">
-      <FloatingShapes count={6} seed={6} />
+      <FloatingShapes count={10} seed={6} />
+
+      <div className="absolute top-20 right-10 w-[300px] h-[300px] rounded-full opacity-[0.04] blur-3xl pointer-events-none" style={{ background: "#F5E6C8" }} />
+      <div className="absolute bottom-20 left-10 w-[250px] h-[250px] rounded-full opacity-[0.03] blur-3xl pointer-events-none" style={{ background: "#C3B1E1" }} />
 
       <div className="max-w-5xl mx-auto px-8 md:px-16 lg:px-24">
         <div className="text-center mb-20">
@@ -31,7 +36,7 @@ export default function Contact() {
             transition={{ duration: 0.6 }}
             className="text-sm tracking-[0.25em] uppercase text-[#F5E6C8] mb-5"
           >
-            Contact
+            {t.contact.label}
           </motion.p>
 
           <motion.h2
@@ -42,12 +47,11 @@ export default function Contact() {
             className="text-3xl md:text-4xl lg:text-5xl font-['Outfit']"
             style={{ fontWeight: 700 }}
           >
-            Travaillons ensemble
+            {t.contact.title_prefix}<span className="text-[#F5E6C8]">{t.contact.title_highlight}</span>
           </motion.h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-16 md:gap-24">
-          {/* Form */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -56,8 +60,8 @@ export default function Contact() {
             className="space-y-7"
           >
             {[
-              { name: "name", placeholder: "Votre nom", type: "text" },
-              { name: "email", placeholder: "Votre email", type: "email" },
+              { name: "name", placeholder: t.contact.name, type: "text" },
+              { name: "email", placeholder: t.contact.email, type: "email" },
             ].map((field) => (
               <input
                 key={field.name}
@@ -69,11 +73,12 @@ export default function Contact() {
                 style={{
                   borderBottomColor: focusColors[field.name] || "rgba(255,255,255,0.08)",
                   borderBottomWidth: "1.5px",
+                  boxShadow: focusColors[field.name] ? `0 4px 15px ${focusColors[field.name]}10` : "none",
                 }}
               />
             ))}
             <textarea
-              placeholder="Votre message"
+              placeholder={t.contact.message}
               rows={5}
               onFocus={() => handleFocus("message")}
               onBlur={() => handleBlur("message")}
@@ -81,6 +86,7 @@ export default function Contact() {
               style={{
                 borderBottomColor: focusColors["message"] || "rgba(255,255,255,0.08)",
                 borderBottomWidth: "1.5px",
+                boxShadow: focusColors["message"] ? `0 4px 15px ${focusColors["message"]}10` : "none",
               }}
             />
             <div className="pt-4">
@@ -91,15 +97,14 @@ export default function Contact() {
                 style={{
                   borderColor: btnColor === "#333" ? "rgba(255,255,255,0.1)" : btnColor,
                   color: btnColor === "#333" ? "#BBB" : btnColor,
-                  boxShadow: btnColor !== "#333" ? `0 0 25px ${btnColor}15` : "none",
+                  boxShadow: btnColor !== "#333" ? `0 0 30px ${btnColor}18` : "none",
                 }}
               >
-                Envoyer
+                {t.contact.send}
               </button>
             </div>
           </motion.div>
 
-          {/* Info */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -124,7 +129,7 @@ export default function Contact() {
               },
               {
                 icon: MapPin,
-                label: "Localisation",
+                label: t.contact.location_label,
                 value: "Kinshasa, RDC",
                 href: null,
                 accent: "#F2B5D4",
@@ -132,15 +137,31 @@ export default function Contact() {
             ].map((item, i) => {
               const Icon = item.icon;
               return (
-                <div key={i} className="flex items-center gap-6">
+                <motion.div
+                  key={i}
+                  className="flex items-center gap-6 group"
+                  whileHover={{ x: 6 }}
+                  transition={{ duration: 0.3 }}
+                >
                   <div
-                    className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0"
-                    style={{ backgroundColor: `${item.accent}12` }}
+                    className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:shadow-lg"
+                    style={{
+                      backgroundColor: `${item.accent}12`,
+                      boxShadow: `0 0 0px ${item.accent}00`,
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.boxShadow = `0 0 20px ${item.accent}18`;
+                      e.currentTarget.style.backgroundColor = `${item.accent}20`;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.boxShadow = `0 0 0px ${item.accent}00`;
+                      e.currentTarget.style.backgroundColor = `${item.accent}12`;
+                    }}
                   >
                     <Icon size={20} strokeWidth={1.5} style={{ color: item.accent }} />
                   </div>
                   <div>
-                    <p className="text-[11px] tracking-[0.2em] uppercase text-[#666] mb-1">
+                    <p className="text-[11px] tracking-[0.2em] uppercase mb-1" style={{ color: `${item.accent}80` }}>
                       {item.label}
                     </p>
                     {item.href ? (
@@ -154,7 +175,7 @@ export default function Contact() {
                       <p className="text-base font-light text-[#CCC]">{item.value}</p>
                     )}
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </motion.div>

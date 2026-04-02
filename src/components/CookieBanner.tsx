@@ -2,11 +2,13 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePastelRotation } from "@/hooks/usePastelRotation";
+import { useI18n } from "@/lib/i18n";
 
 export default function CookieBanner() {
   const [visible, setVisible] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const { next } = usePastelRotation();
+  const { t } = useI18n();
   const [acceptColor, setAcceptColor] = useState("#F5F5F0");
 
   useEffect(() => {
@@ -37,7 +39,7 @@ export default function CookieBanner() {
           className="fixed bottom-8 left-1/2 -translate-x-1/2 w-[calc(100%-48px)] max-w-lg z-[9998] rounded-2xl border border-white/10 bg-[#111]/95 backdrop-blur-xl p-7 shadow-2xl"
         >
           <p className="text-sm text-[#CCC] font-light leading-relaxed mb-1">
-            Ce site utilise des cookies pour améliorer votre expérience.
+            {t.cookies.text}
           </p>
 
           <AnimatePresence>
@@ -52,17 +54,17 @@ export default function CookieBanner() {
                 <div className="pt-4 pb-2 space-y-3 border-t border-white/5 mt-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-[#F5F5F0] font-medium">Essentiels</p>
-                      <p className="text-xs text-[#666] font-light">Fonctionnement du site</p>
+                      <p className="text-sm text-[#F5F5F0] font-medium">{t.cookies.essentials_title}</p>
+                      <p className="text-xs text-[#666] font-light">{t.cookies.essentials_desc}</p>
                     </div>
-                    <span className="text-xs text-[#555] tracking-wider">TOUJOURS ACTIFS</span>
+                    <span className="text-xs text-[#555] tracking-wider">{t.cookies.always}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-[#F5F5F0] font-medium">Analytiques</p>
-                      <p className="text-xs text-[#666] font-light">Comprendre l&apos;utilisation du site</p>
+                      <p className="text-sm text-[#F5F5F0] font-medium">{t.cookies.analytics_title}</p>
+                      <p className="text-xs text-[#666] font-light">{t.cookies.analytics_desc}</p>
                     </div>
-                    <span className="text-xs text-[#555] tracking-wider">OPTIONNELS</span>
+                    <span className="text-xs text-[#555] tracking-wider">{t.cookies.optional}</span>
                   </div>
                 </div>
               </motion.div>
@@ -80,13 +82,13 @@ export default function CookieBanner() {
                 color: "#0A0A0A",
               }}
             >
-              Tout accepter
+              {t.cookies.accept}
             </button>
             <button
               onClick={handleEssentialOnly}
               className="flex-1 py-2.5 rounded-full text-xs tracking-[0.1em] uppercase font-light border border-white/15 text-[#999] hover:text-[#CCC] hover:border-white/25 transition-all duration-300"
             >
-              Essentiels uniquement
+              {t.cookies.essential}
             </button>
           </div>
 
@@ -94,7 +96,7 @@ export default function CookieBanner() {
             onClick={() => setExpanded(!expanded)}
             className="w-full text-center mt-3 text-[11px] text-[#555] hover:text-[#888] transition-colors duration-300 tracking-wider"
           >
-            {expanded ? "Masquer les détails" : "Personnaliser"}
+            {expanded ? t.cookies.hide : t.cookies.customize}
           </button>
         </motion.div>
       )}

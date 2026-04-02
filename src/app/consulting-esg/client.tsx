@@ -7,6 +7,7 @@ const service = getServiceBySlug("consulting-esg")!;
 export default function ServicePageClient() {
   return (
     <ServicePage
+      slug="consulting-esg"
       icon={service.icon}
       title={service.title}
       heroLine={service.heroLine}

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 const PASTEL_COLORS = ["#F2B5D4", "#C3B1E1", "#A8D8C8", "#FADADD", "#B5D8EB", "#F5E6C8"];
 
 interface Shape {
-  type: "circle" | "ring" | "square" | "triangle" | "cross" | "dot";
+  type: "circle" | "ring" | "square" | "triangle" | "cross" | "dot" | "diamond" | "arc" | "hexagon";
   size: number;
   x: string;
   y: string;
@@ -12,22 +12,25 @@ interface Shape {
   delay: number;
   duration: number;
   rotate?: number;
+  opacity: number;
 }
 
 function generateShapes(count: number, seed: number): Shape[] {
-  const types: Shape["type"][] = ["circle", "ring", "square", "triangle", "cross", "dot"];
+  const types: Shape["type"][] = ["circle", "ring", "square", "triangle", "cross", "dot", "diamond", "arc", "hexagon"];
   const shapes: Shape[] = [];
   for (let i = 0; i < count; i++) {
     const idx = (seed + i) % types.length;
+    const sizeFactor = 18 + ((seed * (i + 1) * 7) % 40);
     shapes.push({
       type: types[idx],
-      size: 12 + ((seed * (i + 1) * 7) % 30),
-      x: `${5 + ((seed * (i + 1) * 13) % 90)}%`,
-      y: `${5 + ((seed * (i + 1) * 17) % 90)}%`,
+      size: sizeFactor,
+      x: `${3 + ((seed * (i + 1) * 13) % 94)}%`,
+      y: `${3 + ((seed * (i + 1) * 17) % 94)}%`,
       color: PASTEL_COLORS[(seed + i) % PASTEL_COLORS.length],
-      delay: i * 0.4,
-      duration: 6 + (i % 4) * 2,
-      rotate: (i % 2 === 0) ? 360 : -360,
+      delay: i * 0.3,
+      duration: 5 + (i % 5) * 2,
+      rotate: (i % 3 === 0) ? 360 : (i % 3 === 1) ? -180 : 90,
+      opacity: 0.12 + ((seed * i) % 5) * 0.03,
     });
   }
   return shapes;
@@ -40,24 +43,53 @@ function ShapeSVG({ type, size, color }: { type: Shape["type"]; size: number; co
     case "ring":
       return <circle cx={size / 2} cy={size / 2} r={size / 2 - 2} fill="none" stroke={color} strokeWidth="1.5" />;
     case "square":
-      return <rect width={size * 0.7} height={size * 0.7} x={size * 0.15} y={size * 0.15} fill="none" stroke={color} strokeWidth="1.5" rx="2" />;
+      return <rect width={size * 0.7} height={size * 0.7} x={size * 0.15} y={size * 0.15} fill="none" stroke={color} strokeWidth="1.5" rx="3" />;
     case "triangle":
-      return <polygon points={`${size / 2},${size * 0.15} ${size * 0.15},${size * 0.85} ${size * 0.85},${size * 0.85}`} fill="none" stroke={color} strokeWidth="1.5" />;
+      return <polygon points={`${size / 2},${size * 0.1} ${size * 0.1},${size * 0.9} ${size * 0.9},${size * 0.9}`} fill="none" stroke={color} strokeWidth="1.5" />;
     case "cross":
       return (
         <g stroke={color} strokeWidth="1.5" strokeLinecap="round">
-          <line x1={size * 0.3} y1={size / 2} x2={size * 0.7} y2={size / 2} />
-          <line x1={size / 2} y1={size * 0.3} x2={size / 2} y2={size * 0.7} />
+          <line x1={size * 0.25} y1={size / 2} x2={size * 0.75} y2={size / 2} />
+          <line x1={size / 2} y1={size * 0.25} x2={size / 2} y2={size * 0.75} />
         </g>
       );
     case "dot":
-      return <circle cx={size / 2} cy={size / 2} r={size / 4} fill={color} />;
+      return <circle cx={size / 2} cy={size / 2} r={size / 3} fill={color} />;
+    case "diamond":
+      return (
+        <polygon
+          points={`${size / 2},${size * 0.1} ${size * 0.9},${size / 2} ${size / 2},${size * 0.9} ${size * 0.1},${size / 2}`}
+          fill="none"
+          stroke={color}
+          strokeWidth="1.5"
+        />
+      );
+    case "arc":
+      return (
+        <path
+          d={`M ${size * 0.15} ${size * 0.6} A ${size * 0.35} ${size * 0.35} 0 0 1 ${size * 0.85} ${size * 0.6}`}
+          fill="none"
+          stroke={color}
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+      );
+    case "hexagon": {
+      const cx = size / 2;
+      const cy = size / 2;
+      const r = size * 0.4;
+      const pts = Array.from({ length: 6 }, (_, j) => {
+        const angle = (Math.PI / 3) * j - Math.PI / 2;
+        return `${cx + r * Math.cos(angle)},${cy + r * Math.sin(angle)}`;
+      }).join(" ");
+      return <polygon points={pts} fill="none" stroke={color} strokeWidth="1.5" />;
+    }
     default:
       return null;
   }
 }
 
-export default function FloatingShapes({ count = 8, seed = 1 }: { count?: number; seed?: number }) {
+export default function FloatingShapes({ count = 10, seed = 1 }: { count?: number; seed?: number }) {
   const shapes = generateShapes(count, seed);
 
   return (
@@ -69,9 +101,10 @@ export default function FloatingShapes({ count = 8, seed = 1 }: { count?: number
           style={{ left: shape.x, top: shape.y }}
           initial={{ opacity: 0, scale: 0 }}
           animate={{
-            opacity: [0, 0.15, 0.08, 0.15, 0],
-            scale: [0.5, 1, 0.8, 1, 0.5],
-            y: [0, -20, 10, -15, 0],
+            opacity: [0, shape.opacity, shape.opacity * 0.5, shape.opacity, 0],
+            scale: [0.4, 1.1, 0.9, 1.05, 0.4],
+            y: [0, -30, 15, -20, 0],
+            x: [0, 10, -10, 5, 0],
             rotate: [0, shape.rotate || 0],
           }}
           transition={{

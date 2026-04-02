@@ -7,6 +7,7 @@ const service = getServiceBySlug("evenementiel")!;
 export default function ServicePageClient() {
   return (
     <ServicePage
+      slug="evenementiel"
       icon={service.icon}
       title={service.title}
       heroLine={service.heroLine}

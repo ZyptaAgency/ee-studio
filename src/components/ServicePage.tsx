@@ -1,6 +1,8 @@
 "use client";
 import { motion } from "framer-motion";
 import { usePastelRotation } from "@/hooks/usePastelRotation";
+import { useI18n } from "@/lib/i18n";
+import { getServiceBySlug } from "@/lib/services";
 import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
@@ -12,6 +14,7 @@ interface ServiceDetail {
 }
 
 interface ServicePageProps {
+  slug: string;
   icon: LucideIcon;
   title: string;
   heroLine: string;
@@ -20,20 +23,27 @@ interface ServicePageProps {
 }
 
 export default function ServicePage({
+  slug,
   icon: Icon,
-  title,
-  heroLine,
-  fullDesc,
-  details,
+  title: defaultTitle,
+  heroLine: defaultHeroLine,
+  fullDesc: defaultFullDesc,
+  details: defaultDetails,
 }: ServicePageProps) {
   const { next } = usePastelRotation();
+  const { lang, t } = useI18n();
   const [accentColor, setAccentColor] = useState("#666");
   const [cardColors, setCardColors] = useState<Record<number, string>>({});
   const [backColor, setBackColor] = useState("#666");
 
+  const localized = getServiceBySlug(slug, lang);
+  const title = localized?.title || defaultTitle;
+  const heroLine = localized?.heroLine || defaultHeroLine;
+  const fullDesc = localized?.fullDesc || defaultFullDesc;
+  const details = localized?.details || defaultDetails;
+
   return (
     <>
-      {/* Back nav */}
       <nav className="fixed top-0 left-0 right-0 z-50 py-5 backdrop-blur-xl bg-[#0A0A0A]/90 border-b border-white/5">
         <div className="max-w-6xl mx-auto px-8 md:px-16 lg:px-24 flex items-center justify-between">
           <a
@@ -44,7 +54,7 @@ export default function ServicePage({
             onMouseLeave={() => setBackColor("#666")}
           >
             <ArrowLeft size={18} strokeWidth={1.5} />
-            Retour
+            {t.servicePage.back}
           </a>
           <a href="/" className="flex items-center">
             <Image
@@ -59,7 +69,6 @@ export default function ServicePage({
       </nav>
 
       <main className="pt-32">
-        {/* Hero */}
         <section className="px-8 md:px-16 lg:px-24 max-w-5xl mx-auto mb-24 md:mb-32">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -114,7 +123,6 @@ export default function ServicePage({
           </motion.p>
         </section>
 
-        {/* Details grid */}
         <section className="px-8 md:px-16 lg:px-24 max-w-6xl mx-auto pb-32 md:pb-40">
           <motion.p
             initial={{ opacity: 0, y: 10 }}
@@ -123,7 +131,7 @@ export default function ServicePage({
             transition={{ duration: 0.6 }}
             className="text-sm tracking-[0.2em] uppercase text-[#666] mb-16"
           >
-            Ce que nous faisons
+            {t.servicePage.whatWeDo}
           </motion.p>
 
           <div className="grid md:grid-cols-2 gap-6">
@@ -167,7 +175,6 @@ export default function ServicePage({
           </div>
         </section>
 
-        {/* CTA bottom */}
         <section className="border-t border-white/5 py-28 px-8 md:px-16 lg:px-24 text-center">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -177,7 +184,7 @@ export default function ServicePage({
             className="text-2xl md:text-3xl font-['Outfit'] mb-8"
             style={{ fontWeight: 700 }}
           >
-            Un projet en tête ?
+            {t.servicePage.projectInMind}
           </motion.h2>
           <motion.a
             href="/#contact"
@@ -196,25 +203,25 @@ export default function ServicePage({
               e.currentTarget.style.color = "#999";
             }}
           >
-            Nous contacter
+            {t.servicePage.contactUs}
           </motion.a>
         </section>
       </main>
 
-      {/* Mini footer */}
-      <footer className="border-t border-white/5 py-8 px-6 md:px-12 text-center">
-        <p className="text-xs text-[#444] font-light">
-          © {new Date().getFullYear()} EE Studio SARL — Tous droits réservés
+      <footer className="border-t border-white/5 py-8 px-8 md:px-16 text-center space-y-2">
+        <p className="text-[11px] text-[#555] font-light">
+          © {new Date().getFullYear()} EE Studio SARL — {t.footer.rights}
         </p>
         <a
           href="https://zypta.be"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[10px] text-[#333] hover:text-[#555] transition-colors duration-300 tracking-wider mt-2 inline-block"
+          className="text-[11px] hover:opacity-80 transition-opacity duration-300 tracking-wider inline-block"
         >
-          Crafted by{" "}
-          <span className="font-ethnocentric">ZYP</span>
-          <span className="font-supernova">TA</span>
+          <span className="text-[#555]">Developed by </span>
+          <span className="font-ethnocentric text-[#F5F5F0]">ZYP</span>
+          <span className="font-supernova text-[#C3B1E1]">TA</span>
+          <span className="font-supernova text-[#C3B1E1]">.be</span>
         </a>
       </footer>
     </>

@@ -39,7 +39,10 @@ export default function CookieBanner() {
           className="fixed bottom-8 left-1/2 -translate-x-1/2 w-[calc(100%-48px)] max-w-lg z-[9998] rounded-2xl border border-white/10 bg-[#111]/95 backdrop-blur-xl p-7 shadow-2xl"
         >
           <p className="text-sm text-[#CCC] font-light leading-relaxed mb-1">
-            {t.cookies.text}
+            {t.cookies.text}{" "}
+            <a href="/confidentialite" className="underline text-[#999] hover:text-[#F5F5F0] transition-colors duration-300">
+              {t.cookies.privacy}
+            </a>
           </p>
 
           <AnimatePresence>

@@ -130,7 +130,13 @@ export default function Footer() {
 
         <div className="text-center space-y-3">
           <p className="text-[11px] text-[#555] font-light tracking-wide">
-            © {new Date().getFullYear()} EE Studio SARL — {t.footer.rights}
+            © {new Date().getFullYear()} EE Studio SARL — {t.footer.rights} —{" "}
+            <a
+              href="/confidentialite"
+              className="text-[#555] hover:text-[#999] transition-colors duration-300 underline"
+            >
+              {t.footer.privacy}
+            </a>
           </p>
           <a
             href="https://zypta.be"

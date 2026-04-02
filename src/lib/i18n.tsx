@@ -64,9 +64,11 @@ const translations = {
     footer: {
       desc: "Studio créatif, stratégique et opérationnel basé à Kinshasa.",
       rights: "Tous droits réservés",
+      privacy: "Politique de confidentialité",
     },
     cookies: {
       text: "Ce site utilise des cookies pour améliorer votre expérience.",
+      privacy: "Politique de confidentialité",
       accept: "Tout accepter",
       essential: "Essentiels uniquement",
       customize: "Personnaliser",
@@ -145,9 +147,11 @@ const translations = {
     footer: {
       desc: "Creative, strategic and operational studio based in Kinshasa.",
       rights: "All rights reserved",
+      privacy: "Privacy Policy",
     },
     cookies: {
       text: "This site uses cookies to improve your experience.",
+      privacy: "Privacy Policy",
       accept: "Accept all",
       essential: "Essentials only",
       customize: "Customize",

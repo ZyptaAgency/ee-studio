@@ -163,35 +163,31 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
           />
         </motion.div>
 
-        {/* Tagline */}
-        <motion.div
-          className="mt-8 flex items-center justify-center gap-2"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.6 }}
-        >
+        {/* Tagline — words appear sequentially, dots between them */}
+        <div className="mt-8 flex items-center justify-center gap-3">
           {["Stratégie", "Création", "Impact"].map((word, i) => (
-            <motion.span
-              key={word}
-              className="text-[10px] md:text-xs font-light tracking-[0.15em] uppercase"
-              style={{ color: PASTELS[i] }}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 0.7, y: 0 }}
-              transition={{ delay: 0.8 + i * 0.2, duration: 0.5 }}
-            >
-              {word}
-              {i < 2 && (
+            <motion.span key={word} className="flex items-center gap-3">
+              {i > 0 && (
                 <motion.span
-                  className="inline-block w-1 h-1 rounded-full mx-1.5 align-middle"
-                  style={{ backgroundColor: PASTELS[i + 1] }}
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 1 + i * 0.2, duration: 0.3 }}
+                  className="w-1 h-1 rounded-full flex-shrink-0"
+                  style={{ backgroundColor: PASTELS[i] }}
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 0.7, scale: 1 }}
+                  transition={{ delay: 0.8 + i * 0.3, duration: 0.3 }}
                 />
               )}
+              <motion.span
+                className="text-[10px] md:text-xs font-light tracking-[0.15em] uppercase"
+                style={{ color: PASTELS[i] }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.7 }}
+                transition={{ delay: 0.7 + i * 0.3, duration: 0.4 }}
+              >
+                {word}
+              </motion.span>
             </motion.span>
           ))}
-        </motion.div>
+        </div>
 
         {/* Progress bar — aligned with the 3 dots (rectangle area of logo) */}
         <motion.div

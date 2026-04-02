@@ -218,7 +218,7 @@ export default function ServicePage({
           rel="noopener noreferrer"
           className="text-[11px] hover:opacity-80 transition-opacity duration-300 tracking-wider inline-block"
         >
-          <span className="text-[#555]">Developed by </span>
+          <span className="text-[#555]">{lang === "fr" ? "Développé par " : "Developed by "}</span>
           <span className="zypta-brand">Zypta</span>
           <span className="text-[#555]">.be</span>
         </a>

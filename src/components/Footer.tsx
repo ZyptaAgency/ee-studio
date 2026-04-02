@@ -40,7 +40,7 @@ const SOCIALS = [
 
 export default function Footer() {
   const { next } = usePastelRotation();
-  const { t } = useI18n();
+  const { lang, t } = useI18n();
   const [hoverColors, setHoverColors] = useState<Record<string, string>>({});
 
   const NAV_LINKS = [
@@ -138,7 +138,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="inline-block text-[11px] hover:opacity-80 transition-opacity duration-300 tracking-wider"
           >
-            <span className="text-[#555]">Developed by </span>
+            <span className="text-[#555]">{lang === "fr" ? "Développé par " : "Developed by "}</span>
             <span className="zypta-brand">Zypta</span>
             <span className="text-[#555]">.be</span>
           </a>

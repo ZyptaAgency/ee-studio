@@ -57,9 +57,9 @@ export default function Hero() {
           <Image
             src="/logo.png"
             alt="EE Studio Logo"
-            width={200}
-            height={200}
-            className="w-28 h-28 md:w-40 md:h-40 object-contain"
+            width={430}
+            height={304}
+            className="w-48 md:w-72 h-auto object-contain"
             priority
           />
         </motion.div>

@@ -15,6 +15,12 @@ const sora = Sora({
 });
 
 export const metadata: Metadata = {
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "32x32" },
+    ],
+  },
   title: "EE Studio — Strategy. Creation. Impact.",
   description:
     "EE Studio supports brands in their marketing development, from strategy to content production, with a creative, operational, and sustainable approach. Based in Kinshasa, DRC.",

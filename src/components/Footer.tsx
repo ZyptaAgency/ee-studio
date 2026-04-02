@@ -25,9 +25,9 @@ export default function Footer() {
             <Image
               src="/logo.png"
               alt="EE Studio"
-              width={48}
-              height={48}
-              className="w-11 h-11 object-contain"
+              width={160}
+              height={113}
+              className="h-12 w-auto object-contain"
             />
             <p className="font-body text-xs text-[#F5F5F0]/35 leading-relaxed max-w-xs text-center md:text-left">
               {t.footer.tagline}

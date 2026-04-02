@@ -80,13 +80,10 @@ export default function Navbar() {
           <Image
             src="/logo.png"
             alt="EE Studio"
-            width={36}
-            height={36}
-            className="w-8 h-8 object-contain"
+            width={140}
+            height={99}
+            className="h-10 w-auto object-contain"
           />
-          <span className="font-heading text-lg font-bold tracking-widest text-[#F5F5F0]">
-            EE<span className="font-light"> STUDIO</span>
-          </span>
         </a>
 
         <div className="hidden md:flex items-center gap-8">

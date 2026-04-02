@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import CookieBanner from "@/components/CookieBanner";
+import AppShell from "@/components/AppShell";
 
 export const metadata: Metadata = {
   icons: {
@@ -30,8 +30,7 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body>
-        {children}
-        <CookieBanner />
+        <AppShell>{children}</AppShell>
         <div className="noise-overlay" />
       </body>
     </html>

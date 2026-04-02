@@ -58,15 +58,24 @@ export default function Footer() {
             </span>
             <div className="flex gap-3 justify-center md:justify-start">
               {[
-                { icon: <InstagramIcon size={16} />, label: "Instagram", href: "#" },
-                { icon: <LinkedInIcon size={16} />, label: "LinkedIn", href: "#" },
-                { icon: <TwitterXIcon size={16} />, label: "X / Twitter", href: "#" },
-              ].map(({ icon, label, href }) => (
+                { icon: <InstagramIcon size={16} />, label: "Instagram", href: "#", color: "#E1306C", borderHover: "#E1306C" },
+                { icon: <LinkedInIcon size={16} />, label: "LinkedIn", href: "#", color: "#0A66C2", borderHover: "#0A66C2" },
+                { icon: <TwitterXIcon size={16} />, label: "X / Twitter", href: "#", color: "#FFFFFF", borderHover: "#FFFFFF" },
+              ].map(({ icon, label, href, color, borderHover }) => (
                 <a
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-[#F5F5F0]/35 hover:text-[#F5F5F0] hover:border-white/25 transition-all"
+                  className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center transition-all duration-300"
+                  style={{ color: `${color}60` }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = color;
+                    e.currentTarget.style.borderColor = `${borderHover}40`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = `${color}60`;
+                    e.currentTarget.style.borderColor = "";
+                  }}
                 >
                   {icon}
                 </a>

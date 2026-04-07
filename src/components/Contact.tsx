@@ -2,23 +2,49 @@
 import { motion } from "framer-motion";
 import { usePastelRotation } from "@/hooks/usePastelRotation";
 import { useI18n } from "@/lib/i18n";
-import { useState } from "react";
-import { Mail, MessageCircle, MapPin } from "lucide-react";
+import { getServices } from "@/lib/services";
+import { useState, useRef } from "react";
+import { Mail, MessageCircle, MapPin, Paperclip, X } from "lucide-react";
 import FloatingShapes from "./FloatingShapes";
 
 export default function Contact() {
   const { next } = usePastelRotation();
-  const { t } = useI18n();
+  const { lang, t } = useI18n();
+  const services = getServices(lang);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [btnColor, setBtnColor] = useState("#333");
   const [focusColors, setFocusColors] = useState<Record<string, string>>({});
+  const [selectedService, setSelectedService] = useState("");
+  const [files, setFiles] = useState<File[]>([]);
 
   const handleFocus = (field: string) => {
     setFocusColors((p) => ({ ...p, [field]: next() }));
   };
 
   const handleBlur = (field: string) => {
-    setFocusColors((p) => { const c = { ...p }; delete c[field]; return c; });
+    setFocusColors((p) => {
+      const c = { ...p };
+      delete c[field];
+      return c;
+    });
   };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFiles((prev) => [...prev, ...Array.from(e.target.files!)]);
+    }
+  };
+
+  const removeFile = (index: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const inputStyle = (field: string) => ({
+    borderBottomColor: focusColors[field] || "rgba(255,255,255,0.08)",
+    borderBottomWidth: "1.5px" as const,
+    boxShadow: focusColors[field] ? `0 4px 15px ${focusColors[field]}10` : "none",
+  });
 
   return (
     <section id="contact" className="relative py-28 md:py-40 overflow-hidden">
@@ -52,7 +78,7 @@ export default function Contact() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-16 md:gap-24">
-          <motion.div
+          <motion.form
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -70,27 +96,105 @@ export default function Contact() {
                 onFocus={() => handleFocus(field.name)}
                 onBlur={() => handleBlur(field.name)}
                 className="w-full bg-transparent border-b py-5 text-base font-light text-[#F5F5F0] placeholder-[#555] outline-none transition-all duration-300 focus:placeholder-[#888]"
-                style={{
-                  borderBottomColor: focusColors[field.name] || "rgba(255,255,255,0.08)",
-                  borderBottomWidth: "1.5px",
-                  boxShadow: focusColors[field.name] ? `0 4px 15px ${focusColors[field.name]}10` : "none",
-                }}
+                style={inputStyle(field.name)}
               />
             ))}
+
+            <div className="relative">
+              <select
+                value={selectedService}
+                onChange={(e) => setSelectedService(e.target.value)}
+                onFocus={() => handleFocus("service")}
+                onBlur={() => handleBlur("service")}
+                className="w-full bg-transparent border-b py-5 text-base font-light outline-none transition-all duration-300 appearance-none cursor-pointer"
+                style={{
+                  ...inputStyle("service"),
+                  color: selectedService ? "#F5F5F0" : "#555",
+                }}
+              >
+                <option value="" disabled className="bg-[#111] text-[#555]">
+                  {t.contact.service_placeholder}
+                </option>
+                {services.map((s) => (
+                  <option key={s.slug} value={s.title} className="bg-[#111] text-[#F5F5F0]">
+                    {s.title}
+                  </option>
+                ))}
+              </select>
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-[#555]">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M3 4.5L6 7.5L9 4.5" />
+                </svg>
+              </div>
+            </div>
+
             <textarea
               placeholder={t.contact.message}
               rows={5}
               onFocus={() => handleFocus("message")}
               onBlur={() => handleBlur("message")}
               className="w-full bg-transparent border-b py-5 text-base font-light text-[#F5F5F0] placeholder-[#555] outline-none resize-none transition-all duration-300 focus:placeholder-[#888]"
-              style={{
-                borderBottomColor: focusColors["message"] || "rgba(255,255,255,0.08)",
-                borderBottomWidth: "1.5px",
-                boxShadow: focusColors["message"] ? `0 4px 15px ${focusColors["message"]}10` : "none",
-              }}
+              style={inputStyle("message")}
             />
+
+            <div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                onChange={handleFileChange}
+                className="hidden"
+                accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.zip"
+              />
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                onMouseEnter={() => handleFocus("file")}
+                onMouseLeave={() => handleBlur("file")}
+                className="flex items-center gap-3 text-sm font-light transition-all duration-300 group"
+                style={{ color: focusColors["file"] || "#666" }}
+              >
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-300"
+                  style={{
+                    borderColor: focusColors["file"] || "rgba(255,255,255,0.08)",
+                    backgroundColor: focusColors["file"] ? `${focusColors["file"]}10` : "transparent",
+                  }}
+                >
+                  <Paperclip size={16} strokeWidth={1.5} />
+                </div>
+                {t.contact.attachment_label}
+              </button>
+
+              {files.length > 0 && (
+                <div className="mt-3 space-y-2">
+                  {files.map((file, i) => (
+                    <div
+                      key={`${file.name}-${i}`}
+                      className="flex items-center justify-between py-2 px-3 rounded-lg bg-white/[0.03] border border-white/[0.06]"
+                    >
+                      <span className="text-xs text-[#999] font-light truncate max-w-[200px]">
+                        {file.name}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => removeFile(i)}
+                        className="text-[#555] hover:text-[#F5F5F0] transition-colors duration-300 ml-3"
+                      >
+                        <X size={12} />
+                      </button>
+                    </div>
+                  ))}
+                  <p className="text-[11px] text-[#555] font-light">
+                    {files.length} {t.contact.file_selected}
+                  </p>
+                </div>
+              )}
+            </div>
+
             <div className="pt-4">
               <button
+                type="submit"
                 onMouseEnter={() => setBtnColor(next())}
                 onMouseLeave={() => setBtnColor("#333")}
                 className="px-12 py-4 rounded-full text-sm tracking-[0.12em] uppercase font-light border transition-all duration-300"
@@ -103,7 +207,7 @@ export default function Contact() {
                 {t.contact.send}
               </button>
             </div>
-          </motion.div>
+          </motion.form>
 
           <motion.div
             initial={{ opacity: 0, y: 30 }}

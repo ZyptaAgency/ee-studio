@@ -1,21 +1,24 @@
 "use client";
 import { motion } from "framer-motion";
+import { useI18n } from "@/lib/i18n";
 
-const WORDS = "STRATÉGIE • CRÉATION • CONTENU • IMPACT • DURABLE • MARKETING • VISION • ";
-const REPEATED = WORDS.repeat(4);
+const WORDS_FR = "STRATÉGIE • CRÉATION • CONTENU • IMPACT • DURABLE • MARKETING • VISION • ";
+const WORDS_EN = "STRATEGY • CREATION • CONTENT • IMPACT • SUSTAINABLE • MARKETING • VISION • ";
 
 const PASTEL_ACCENTS = ["#F2B5D4", "#C3B1E1", "#A8D8C8", "#B5D8EB", "#FADADD", "#F5E6C8"];
 
 export default function Marquee() {
+  const { lang } = useI18n();
+  const words = lang === "en" ? WORDS_EN : WORDS_FR;
+  const repeated = words.repeat(4);
+
   return (
     <section className="py-14 overflow-hidden border-y border-white/5 relative">
-      {/* Pastel gradient line on top */}
       <div
         className="absolute top-0 left-0 right-0 h-[1px]"
         style={{ background: "linear-gradient(90deg, transparent, #C3B1E130, #F2B5D430, #A8D8C830, transparent)" }}
       />
 
-      {/* Pastel floating dots */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
         {PASTEL_ACCENTS.map((color, i) => (
           <motion.div
@@ -49,11 +52,10 @@ export default function Marquee() {
         className="whitespace-nowrap"
       >
         <span className="text-5xl md:text-7xl font-['Outfit'] text-white/[0.03] tracking-wider" style={{ fontWeight: 800 }}>
-          {REPEATED}
+          {repeated}
         </span>
       </motion.div>
 
-      {/* Pastel gradient line on bottom */}
       <div
         className="absolute bottom-0 left-0 right-0 h-[1px]"
         style={{ background: "linear-gradient(90deg, transparent, #A8D8C830, #B5D8EB30, #F5E6C830, transparent)" }}

@@ -5,6 +5,7 @@ import { useI18n } from "@/lib/i18n";
 import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { getServices } from "@/lib/services";
+import Link from "next/link";
 import FloatingShapes from "./FloatingShapes";
 
 const PASTEL_ACCENTS = ["#F2B5D4", "#C3B1E1", "#A8D8C8", "#B5D8EB", "#FADADD", "#F5E6C8"];
@@ -64,22 +65,22 @@ export default function Services() {
             const color = activeColors[i];
             const defaultAccent = PASTEL_ACCENTS[i % PASTEL_ACCENTS.length];
             return (
-              <motion.a
+              <motion.div
                 key={service.slug}
-                href={`/${service.slug}`}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-30px" }}
                 transition={{ duration: 0.5, delay: i * 0.08 }}
                 onMouseEnter={() => handleHover(i)}
                 onMouseLeave={() => handleLeave(i)}
-                className="group relative p-8 md:p-10 rounded-2xl border border-white/5 bg-[#111] hover:bg-[#161616] transition-all duration-500 cursor-pointer block overflow-hidden"
+                className="group relative rounded-2xl border border-white/5 bg-[#111] hover:bg-[#161616] transition-all duration-500 cursor-pointer overflow-hidden"
                 style={{
                   borderColor: color ? `${color}30` : "rgba(255,255,255,0.05)",
                   transform: color ? "translateY(-4px)" : "translateY(0)",
                   transition: "all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
                 }}
               >
+              <Link href={`/${service.slug}`} className="block p-8 md:p-10">
                 <div
                   className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
                   style={{ background: color ? `radial-gradient(circle at 30% 30%, ${color}10 0%, transparent 70%)` : "none" }}
@@ -126,7 +127,8 @@ export default function Services() {
                     transition={{ duration: 0.4 }}
                   />
                 </div>
-              </motion.a>
+              </Link>
+              </motion.div>
             );
           })}
         </div>

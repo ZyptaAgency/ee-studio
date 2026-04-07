@@ -6,6 +6,7 @@ import { getServiceBySlug } from "@/lib/services";
 import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 
 interface ServiceDetail {
@@ -46,7 +47,7 @@ export default function ServicePage({
     <>
       <nav className="fixed top-0 left-0 right-0 z-50 py-5 backdrop-blur-xl bg-[#0A0A0A]/90 border-b border-white/5">
         <div className="max-w-6xl mx-auto px-8 md:px-16 lg:px-24 flex items-center justify-between">
-          <a
+          <Link
             href="/"
             className="flex items-center gap-3 text-sm tracking-wide transition-colors duration-300"
             style={{ color: backColor }}
@@ -55,8 +56,8 @@ export default function ServicePage({
           >
             <ArrowLeft size={18} strokeWidth={1.5} />
             {t.servicePage.back}
-          </a>
-          <a href="/" className="flex items-center">
+          </Link>
+          <Link href="/" className="flex items-center">
             <Image
               src="/logo.png"
               alt="EE Studio"
@@ -64,7 +65,7 @@ export default function ServicePage({
               height={141}
               className="h-14 w-auto object-contain"
             />
-          </a>
+          </Link>
         </div>
       </nav>
 
@@ -186,31 +187,34 @@ export default function ServicePage({
           >
             {t.servicePage.projectInMind}
           </motion.h2>
-          <motion.a
-            href="/#contact"
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="inline-block px-8 py-3 rounded-full text-sm tracking-[0.1em] uppercase font-light border border-[#333] text-[#999] hover:text-[#F5F5F0] transition-all duration-400"
-            onMouseEnter={(e) => {
-              const c = next();
-              e.currentTarget.style.borderColor = c;
-              e.currentTarget.style.color = c;
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "#333";
-              e.currentTarget.style.color = "#999";
-            }}
           >
-            {t.servicePage.contactUs}
-          </motion.a>
+            <Link
+              href="/#contact"
+              className="inline-block px-8 py-3 rounded-full text-sm tracking-[0.1em] uppercase font-light border border-[#333] text-[#999] hover:text-[#F5F5F0] transition-all duration-400"
+              onMouseEnter={(e) => {
+                const c = next();
+                e.currentTarget.style.borderColor = c;
+                e.currentTarget.style.color = c;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "#333";
+                e.currentTarget.style.color = "#999";
+              }}
+            >
+              {t.servicePage.contactUs}
+            </Link>
+          </motion.div>
         </section>
       </main>
 
       <footer className="border-t border-white/5 py-8 px-8 md:px-16 text-center space-y-2">
         <p className="text-[11px] text-[#555] font-light">
-          © {new Date().getFullYear()} EE Studio SARL — {t.footer.rights}
+          © {new Date().getFullYear()} EE Studio SARL - {t.footer.rights}
         </p>
         <a
           href="https://zypta.be"

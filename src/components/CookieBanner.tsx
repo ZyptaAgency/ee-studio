@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePastelRotation } from "@/hooks/usePastelRotation";
 import { useI18n } from "@/lib/i18n";
+import Link from "next/link";
 
 export default function CookieBanner() {
   const [visible, setVisible] = useState(false);
@@ -40,9 +41,9 @@ export default function CookieBanner() {
         >
           <p className="text-sm text-[#CCC] font-light leading-relaxed mb-1">
             {t.cookies.text}{" "}
-            <a href="/confidentialite" className="underline text-[#999] hover:text-[#F5F5F0] transition-colors duration-300">
+            <Link href="/confidentialite" className="underline text-[#999] hover:text-[#F5F5F0] transition-colors duration-300">
               {t.cookies.privacy}
-            </a>
+            </Link>
           </p>
 
           <AnimatePresence>

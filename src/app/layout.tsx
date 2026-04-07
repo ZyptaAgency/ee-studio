@@ -9,11 +9,11 @@ export const metadata: Metadata = {
       { url: "/favicon.ico", sizes: "32x32" },
     ],
   },
-  title: "EE Studio — Stratégie. Création. Impact.",
+  title: "EE Studio - Stratégie. Création. Impact.",
   description:
     "EE Studio accompagne les marques dans leur développement marketing, de la stratégie à la production de contenu, avec une approche créative, opérationnelle et durable. Basé à Kinshasa.",
   openGraph: {
-    title: "EE Studio — Stratégie. Création. Impact.",
+    title: "EE Studio - Stratégie. Création. Impact.",
     description:
       "Studio créatif, stratégique et opérationnel. Marketing, production audiovisuelle, consulting ESG.",
     type: "website",

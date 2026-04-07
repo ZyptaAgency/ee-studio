@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useI18n } from "@/lib/i18n";
 
 const PASTELS = ["#F2B5D4", "#C3B1E1", "#A8D8C8", "#B5D8EB", "#FADADD", "#F5E6C8"];
 
@@ -61,7 +62,13 @@ const PARTICLES = Array.from({ length: 20 }, (_, i) => ({
   dur: 2 + (i % 3) * 0.8,
 }));
 
+const TAGLINE_FR = ["Stratégie", "Création", "Impact"];
+const TAGLINE_EN = ["Strategy", "Creation", "Impact"];
+
 export default function LoadingScreen({ onComplete }: { onComplete: () => void }) {
+  const { lang } = useI18n();
+  const tagline = lang === "en" ? TAGLINE_EN : TAGLINE_FR;
+
   return (
     <motion.div
       className="fixed inset-0 z-[10000] bg-[#0A0A0A] flex flex-col items-center justify-center overflow-hidden"
@@ -165,7 +172,7 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
 
         {/* Tagline — words appear sequentially, dots between them */}
         <div className="mt-8 flex items-center justify-center gap-3">
-          {["Stratégie", "Création", "Impact"].map((word, i) => (
+          {tagline.map((word, i) => (
             <motion.span key={word} className="flex items-center gap-3">
               {i > 0 && (
                 <motion.span

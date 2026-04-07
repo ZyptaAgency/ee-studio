@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import LoadingScreen from "./LoadingScreen";
 import CookieBanner from "./CookieBanner";
+import HomeScrollRestore from "./HomeScrollRestore";
 import { I18nProvider } from "@/lib/i18n";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
@@ -35,6 +36,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <I18nProvider>
+      <HomeScrollRestore />
       <AnimatePresence mode="wait">
         {loading && <LoadingScreen onComplete={handleLoadingComplete} />}
       </AnimatePresence>

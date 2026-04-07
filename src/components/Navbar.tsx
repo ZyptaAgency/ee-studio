@@ -6,12 +6,27 @@ import { usePastelRotation } from "@/hooks/usePastelRotation";
 import { useI18n } from "@/lib/i18n";
 import Image from "next/image";
 
+const EE_LOADED_KEY = "ee-loaded";
+
+/** Full page reload so AppShell shows LoadingScreen again; lang stays from localStorage (ee-lang). */
+function restartSiteWithIntro() {
+  if (typeof window === "undefined") return;
+  sessionStorage.removeItem(EE_LOADED_KEY);
+  if (window.location.pathname === "/" && !window.location.hash) {
+    window.location.reload();
+  } else {
+    window.location.href = "/";
+  }
+}
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { next } = usePastelRotation();
   const [hoverColors, setHoverColors] = useState<Record<string, string>>({});
   const { lang, setLang, t } = useI18n();
+
+  const logoHomeAria = lang === "fr" ? "EE Studio - accueil" : "EE Studio - home";
 
   const NAV_LINKS = [
     { label: t.nav.about, href: "#about" },
@@ -41,8 +56,16 @@ export default function Navbar() {
               : "py-3 bg-[#0A0A0A]/50 backdrop-blur-xl border-white/[0.06]"
           }`}
         >
-          {/* Logo left */}
-          <a href="#" className="flex items-center shrink-0">
+          {/* Logo left: full refresh + intro (respects saved language) */}
+          <a
+            href="/"
+            className="flex items-center shrink-0"
+            aria-label={logoHomeAria}
+            onClick={(e) => {
+              e.preventDefault();
+              restartSiteWithIntro();
+            }}
+          >
             <Image
               src="/logo.png"
               alt="EE Studio"
@@ -145,13 +168,23 @@ export default function Navbar() {
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-40 bg-[#0A0A0A]/98 backdrop-blur-xl flex flex-col items-center justify-center gap-10"
           >
-            <Image
-              src="/logo.png"
-              alt="EE Studio"
-              width={200}
-              height={141}
-              className="h-16 w-auto object-contain mb-6"
-            />
+            <button
+              type="button"
+              className="mb-6 cursor-pointer bg-transparent border-0 p-0"
+              onClick={() => {
+                setOpen(false);
+                restartSiteWithIntro();
+              }}
+              aria-label={logoHomeAria}
+            >
+              <Image
+                src="/logo.png"
+                alt="EE Studio"
+                width={200}
+                height={141}
+                className="h-16 w-auto object-contain"
+              />
+            </button>
             {NAV_LINKS.map((link, i) => (
               <motion.a
                 key={link.href}

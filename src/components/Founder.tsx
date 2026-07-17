@@ -36,8 +36,10 @@ export default function Founder() {
               <Image
                 src="/founder.png"
                 alt="Lise-Laure Zuzi"
-                width={683}
+                width={682}
                 height={1024}
+                quality={95}
+                sizes="(max-width: 768px) 90vw, 384px"
                 className="w-full h-auto object-cover"
               />
               <div className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(to top, rgba(8,8,8,0.5), transparent 45%)" }} />

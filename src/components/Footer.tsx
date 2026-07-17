@@ -57,8 +57,8 @@ interface SocialItem {
 
 const SOCIALS: SocialItem[] = [
   { label: "Instagram", href: "https://www.instagram.com/ee.studio_media", icon: InstagramIcon, color: "#E1306C", gradientRing: true },
-  { label: "LinkedIn", href: "#", icon: LinkedInIcon, color: "#0A66C2", glowRgb: "10, 102, 194" },
-  { label: "YouTube", href: "#", icon: YouTubeIcon, color: "#FF0000", glowRgb: "255, 0, 0" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/lise-laure-nzuzi-a998b7252/", icon: LinkedInIcon, color: "#0A66C2", glowRgb: "10, 102, 194" },
+  { label: "YouTube", href: "https://www.youtube.com/@ee.studio-media", icon: YouTubeIcon, color: "#FF0000", glowRgb: "255, 0, 0" },
 ];
 
 function luminousShadow(rgb: string, hover: boolean) {

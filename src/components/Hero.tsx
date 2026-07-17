@@ -13,6 +13,7 @@ export default function Hero() {
   const { next } = usePastelRotation();
   const { t } = useI18n();
   const [ctaColor, setCtaColor] = useState("#999");
+  const [ctaSecondaryColor, setCtaSecondaryColor] = useState("#F5F5F0");
   const [letterColors, setLetterColors] = useState<Record<number, string>>({});
 
   const titleLetters = "EE STUDIO".split("");
@@ -84,22 +85,39 @@ export default function Hero() {
         ))}
       </motion.p>
 
-      <motion.a
-        href="#about"
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.8, duration: 0.6 }}
-        className="group relative px-8 py-3 rounded-full text-sm tracking-[0.15em] uppercase font-light border transition-all duration-300"
-        style={{
-          color: ctaColor === "#999" ? "#BBB" : ctaColor,
-          borderColor: ctaColor === "#999" ? "rgba(255,255,255,0.1)" : `${ctaColor}50`,
-          boxShadow: ctaColor !== "#999" ? `0 0 30px ${ctaColor}18` : "none",
-        }}
-        onMouseEnter={() => setCtaColor(next())}
-        onMouseLeave={() => setCtaColor("#999")}
+        className="flex flex-col sm:flex-row items-center gap-4"
       >
-        {t.hero.cta}
-      </motion.a>
+        <a
+          href="#about"
+          className="group relative px-8 py-3 rounded-full text-sm tracking-[0.15em] uppercase font-light border transition-all duration-300"
+          style={{
+            color: ctaColor === "#999" ? "#BBB" : ctaColor,
+            borderColor: ctaColor === "#999" ? "rgba(255,255,255,0.1)" : `${ctaColor}50`,
+            boxShadow: ctaColor !== "#999" ? `0 0 30px ${ctaColor}18` : "none",
+          }}
+          onMouseEnter={() => setCtaColor(next())}
+          onMouseLeave={() => setCtaColor("#999")}
+        >
+          {t.hero.cta}
+        </a>
+        <a
+          href="#booking"
+          className="px-8 py-3 rounded-full text-sm tracking-[0.15em] uppercase font-medium transition-all duration-300"
+          style={{
+            backgroundColor: ctaSecondaryColor,
+            color: "#0A0A0A",
+            boxShadow: ctaSecondaryColor !== "#F5F5F0" ? `0 0 30px ${ctaSecondaryColor}35` : "none",
+          }}
+          onMouseEnter={() => setCtaSecondaryColor(next())}
+          onMouseLeave={() => setCtaSecondaryColor("#F5F5F0")}
+        >
+          {t.hero.cta_secondary}
+        </a>
+      </motion.div>
 
       <motion.div
         initial={{ opacity: 0 }}

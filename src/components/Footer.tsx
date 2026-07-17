@@ -56,7 +56,7 @@ interface SocialItem {
 }
 
 const SOCIALS: SocialItem[] = [
-  { label: "Instagram", href: "#", icon: InstagramIcon, color: "#E1306C", gradientRing: true },
+  { label: "Instagram", href: "https://www.instagram.com/ee.studio_media", icon: InstagramIcon, color: "#E1306C", gradientRing: true },
   { label: "LinkedIn", href: "#", icon: LinkedInIcon, color: "#0A66C2", glowRgb: "10, 102, 194" },
   { label: "YouTube", href: "#", icon: YouTubeIcon, color: "#FF0000", glowRgb: "255, 0, 0" },
 ];
@@ -85,6 +85,7 @@ export default function Footer() {
 
   const NAV_LINKS = [
     { label: t.nav.about, href: "#about" },
+    { label: t.nav.approach, href: "#approach" },
     { label: t.nav.services, href: "#services" },
     { label: t.nav.portfolio, href: "#portfolio" },
     { label: t.nav.booking, href: "#booking" },
@@ -142,6 +143,8 @@ export default function Footer() {
                 <a
                   key={s.label}
                   href={s.href}
+                  target={s.href.startsWith("http") ? "_blank" : undefined}
+                  rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
                   aria-label={s.label}
                   className="rounded-full p-[2px] flex items-center justify-center transition-all duration-300"
                   style={{
@@ -171,6 +174,8 @@ export default function Footer() {
               <a
                 key={s.label}
                 href={s.href}
+                target={s.href.startsWith("http") ? "_blank" : undefined}
+                rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
                 aria-label={s.label}
                 className="w-11 h-11 rounded-full border-2 flex items-center justify-center transition-all duration-300"
                 style={{

@@ -30,6 +30,7 @@ export default function Navbar() {
 
   const NAV_LINKS = [
     { label: t.nav.about, href: "#about" },
+    { label: t.nav.approach, href: "#approach" },
     { label: t.nav.services, href: "#services" },
     { label: t.nav.portfolio, href: "#portfolio" },
     { label: t.nav.booking, href: "#booking" },
@@ -76,7 +77,7 @@ export default function Navbar() {
           </a>
 
           {/* Desktop links + lang switcher */}
-          <div className="hidden md:flex items-center gap-8 lg:gap-10">
+          <div className="hidden md:flex items-center gap-5 lg:gap-8">
             {NAV_LINKS.map((link) => (
               <a
                 key={link.href}

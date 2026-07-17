@@ -13,6 +13,7 @@ export default function ServicePageClient() {
       heroLine={service.heroLine}
       fullDesc={service.fullDesc}
       details={service.details}
+      result={service.result}
     />
   );
 }

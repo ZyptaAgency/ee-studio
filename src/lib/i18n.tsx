@@ -7,6 +7,7 @@ const translations = {
   fr: {
     nav: {
       about: "À propos",
+      approach: "Approche",
       services: "Services",
       portfolio: "Portfolio",
       booking: "Rendez-vous",
@@ -15,6 +16,7 @@ const translations = {
     hero: {
       subtitle: "Stratégie. Création. Impact.",
       cta: "Découvrir",
+      cta_secondary: "Réserver un appel",
       scroll: "Scroll",
     },
     about: {
@@ -22,8 +24,60 @@ const translations = {
       title_prefix: "Un studio ",
       keywords: ["créatif", "stratégique", "opérationnel", "durable"],
       and: " et ",
-      p1: "EE Studio est un studio créatif et stratégique basé à Kinshasa, fondé par Lise-Laure. Nous accompagnons les marques dans leur développement marketing - de la réflexion stratégique à la production de contenu, en passant par l'exécution terrain.",
-      p2: "Notre différence : une approche 360° qui combine marketing, production audiovisuelle et consulting en développement durable. On ne conseille pas seulement - on produit, on livre, on exécute.",
+      p1: "E.E Studio SARL est une société basée à Kinshasa (RDC) qui accompagne les marques et les personnes dans la construction, le développement et l'expression de leur image, du positionnement stratégique à l'activation opérationnelle.",
+      p2: "De la réflexion à la mise en œuvre, nous assurons un accompagnement global et une facilitation à chaque étape : cadrage, stratégie, création, production et exécution terrain. Une structure qui articule conseil, création et production pour transformer les idées en réalisations tangibles.",
+      mission_label: "Notre mission",
+      mission: "Accompagner les marques dans la création d'une image cohérente, impactante et durable, en reliant stratégie, création et exécution.",
+    },
+    founder: {
+      label: "La fondatrice",
+      name: "Lise-Laure Zuzi",
+      role: "Fondatrice & CEO",
+      quote: "Je ne voulais pas créer un studio qui se contente de conseiller. Je voulais un studio qui imagine, qui produit, qui transforme et qui rend réel.",
+      p1: "Un studio capable de penser une stratégie, mais surtout de la faire exister. E.E Studio, c'est ça : une vision, des idées… et leur exécution. Sans attendre les conditions parfaites, sans dépendre d'un outil. Juste la capacité de faire exister ce qui n'existait pas encore.",
+      p2: "E.E, c'est aussi mon prénom à l'envers. Une manière de ne jamais oublier qui je suis, d'où je viens et où je vais.",
+      cta: "Échanger avec nous",
+    },
+    approach: {
+      label: "Notre approche",
+      title_prefix: "Comment ",
+      title_highlight: "travaillons-nous",
+      intro: "Chaque projet est pensé comme un ensemble cohérent, où stratégie, création et production avancent ensemble.",
+      phases: [
+        {
+          num: "01",
+          tag: "Vision",
+          title: "Comprendre & Structurer",
+          points: [
+            "Nous analysons votre marque, vos besoins et vos objectifs pour poser des bases solides.",
+            "Nous définissons une stratégie claire : positionnement, message, direction.",
+          ],
+        },
+        {
+          num: "02",
+          tag: "Exécution",
+          title: "Concevoir & Produire",
+          points: [
+            "Nous imaginons et développons les concepts créatifs adaptés à votre univers.",
+            "Nous réalisons les contenus et supports nécessaires avec une exigence de qualité constante.",
+          ],
+        },
+        {
+          num: "03",
+          tag: "Résultat",
+          title: "Déployer & Optimiser",
+          points: [
+            "Nous déployons concrètement les actions, en ligne et sur le terrain.",
+            "Nous analysons, optimisons et faisons évoluer les actions pour maximiser leur impact.",
+          ],
+        },
+      ],
+    },
+    cta_band: {
+      title: "Transformons vos idées en réalisations tangibles.",
+      subtitle: "Une vision, des idées… et leur exécution.",
+      primary: "Réserver un rendez-vous",
+      secondary: "Nous écrire",
     },
     services: {
       label: "Nos expertises",
@@ -106,13 +160,16 @@ const translations = {
     servicePage: {
       back: "Retour",
       whatWeDo: "Ce que nous faisons",
+      result_label: "Le résultat",
       projectInMind: "Un projet en tête ?",
       contactUs: "Nous contacter",
+      book: "Réserver un rendez-vous",
     },
   },
   en: {
     nav: {
       about: "About",
+      approach: "Approach",
       services: "Services",
       portfolio: "Portfolio",
       booking: "Booking",
@@ -121,6 +178,7 @@ const translations = {
     hero: {
       subtitle: "Strategy. Creation. Impact.",
       cta: "Discover",
+      cta_secondary: "Book a call",
       scroll: "Scroll",
     },
     about: {
@@ -128,8 +186,60 @@ const translations = {
       title_prefix: "A ",
       keywords: ["creative", "strategic", "operational", "sustainable"],
       and: " and ",
-      p1: "EE Studio is a creative and strategic studio based in Kinshasa, founded by Lise-Laure. We support brands in their marketing development - from strategic thinking to content production and field execution.",
-      p2: "Our difference: a 360° approach combining marketing, audiovisual production and sustainable development consulting. We don't just advise - we produce, deliver and execute.",
+      p1: "E.E Studio SARL is a company based in Kinshasa (DRC) that supports brands and people in building, developing and expressing their image, from strategic positioning to operational activation.",
+      p2: "From reflection to execution, we provide global support and facilitation at every stage: framing, strategy, creation, production and field execution. A structure that connects consulting, creation and production to turn ideas into tangible outcomes.",
+      mission_label: "Our mission",
+      mission: "Supporting brands in creating a coherent, impactful and lasting image, by connecting strategy, creation and execution.",
+    },
+    founder: {
+      label: "The founder",
+      name: "Lise-Laure Zuzi",
+      role: "Founder & CEO",
+      quote: "I didn't want to create a studio that just gives advice. I wanted a studio that imagines, produces, transforms and makes things real.",
+      p1: "A studio able to think a strategy, but above all to make it exist. That's what E.E Studio is: a vision, ideas… and their execution. Without waiting for perfect conditions, without depending on a single tool. Just the ability to bring into existence what did not yet exist.",
+      p2: "E.E is also my first name reversed. A way to never forget who I am, where I come from and where I'm going.",
+      cta: "Talk with us",
+    },
+    approach: {
+      label: "Our approach",
+      title_prefix: "How do we ",
+      title_highlight: "work",
+      intro: "Every project is designed as a coherent whole, where strategy, creation and production move forward together.",
+      phases: [
+        {
+          num: "01",
+          tag: "Vision",
+          title: "Understand & Structure",
+          points: [
+            "We analyze your brand, needs and objectives to build solid foundations.",
+            "We define a clear strategy: positioning, message, direction.",
+          ],
+        },
+        {
+          num: "02",
+          tag: "Execution",
+          title: "Design & Produce",
+          points: [
+            "We imagine and develop creative concepts tailored to your universe.",
+            "We create the necessary content and assets with a constant standard of quality.",
+          ],
+        },
+        {
+          num: "03",
+          tag: "Result",
+          title: "Deploy & Optimize",
+          points: [
+            "We concretely deploy actions, online and in the field.",
+            "We analyze, optimize and evolve actions to maximize their impact.",
+          ],
+        },
+      ],
+    },
+    cta_band: {
+      title: "Let's turn your ideas into tangible outcomes.",
+      subtitle: "A vision, ideas… and their execution.",
+      primary: "Book an appointment",
+      secondary: "Write to us",
     },
     services: {
       label: "Our expertise",
@@ -212,8 +322,10 @@ const translations = {
     servicePage: {
       back: "Back",
       whatWeDo: "What we do",
+      result_label: "The result",
       projectInMind: "Have a project in mind?",
       contactUs: "Contact us",
+      book: "Book an appointment",
     },
   },
 };

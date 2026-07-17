@@ -91,11 +91,29 @@ export default function About() {
         </div>
 
         <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="mt-24 md:mt-32 max-w-3xl mx-auto text-center relative"
+        >
+          <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-6xl md:text-7xl font-['Outfit'] leading-none select-none pointer-events-none" style={{ color: "#C3B1E115" }}>
+            “
+          </div>
+          <p className="text-[11px] tracking-[0.25em] uppercase text-[#C3B1E1] mb-5">
+            {t.about.mission_label}
+          </p>
+          <p className="text-xl md:text-2xl lg:text-[26px] font-['Outfit'] font-light leading-[1.6] text-[#EAEAEA]">
+            {t.about.mission}
+          </p>
+        </motion.div>
+
+        <motion.div
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-          className="h-[1px] mt-28 origin-center max-w-sm mx-auto"
+          className="h-[1px] mt-24 origin-center max-w-sm mx-auto"
           style={{ background: "linear-gradient(90deg, transparent, #C3B1E150, #F2B5D450, #A8D8C850, transparent)" }}
         />
       </div>

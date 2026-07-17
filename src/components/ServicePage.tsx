@@ -21,6 +21,7 @@ interface ServicePageProps {
   heroLine: string;
   fullDesc: string;
   details: ServiceDetail[];
+  result?: string;
 }
 
 export default function ServicePage({
@@ -30,18 +31,21 @@ export default function ServicePage({
   heroLine: defaultHeroLine,
   fullDesc: defaultFullDesc,
   details: defaultDetails,
+  result: defaultResult,
 }: ServicePageProps) {
   const { next } = usePastelRotation();
   const { lang, t } = useI18n();
   const [accentColor, setAccentColor] = useState("#666");
   const [cardColors, setCardColors] = useState<Record<number, string>>({});
   const [backColor, setBackColor] = useState("#666");
+  const [bookColor, setBookColor] = useState("#F5F5F0");
 
   const localized = getServiceBySlug(slug, lang);
   const title = localized?.title || defaultTitle;
   const heroLine = localized?.heroLine || defaultHeroLine;
   const fullDesc = localized?.fullDesc || defaultFullDesc;
   const details = localized?.details || defaultDetails;
+  const result = localized?.result || defaultResult;
 
   return (
     <>
@@ -174,6 +178,25 @@ export default function ServicePage({
               </motion.div>
             ))}
           </div>
+
+          {result && (
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.6 }}
+              className="mt-8 p-8 md:p-12 rounded-2xl border border-white/10 relative overflow-hidden"
+              style={{ background: "linear-gradient(135deg, #C3B1E108, #F2B5D408)" }}
+            >
+              <div className="absolute top-0 left-0 w-1 h-full" style={{ background: "linear-gradient(to bottom, #C3B1E1, #F2B5D4, #A8D8C8)" }} />
+              <p className="text-[11px] tracking-[0.22em] uppercase text-[#C3B1E1] mb-4">
+                {t.servicePage.result_label}
+              </p>
+              <p className="text-lg md:text-xl font-['Outfit'] font-light leading-relaxed text-[#EAEAEA] max-w-3xl">
+                {result}
+              </p>
+            </motion.div>
+          )}
         </section>
 
         <section className="border-t border-white/5 py-28 px-8 md:px-16 lg:px-24 text-center">
@@ -192,7 +215,21 @@ export default function ServicePage({
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
+            <Link
+              href="/#booking"
+              className="inline-block px-8 py-3 rounded-full text-sm tracking-[0.1em] uppercase font-medium transition-all duration-400"
+              style={{
+                backgroundColor: bookColor,
+                color: "#0A0A0A",
+                boxShadow: bookColor !== "#F5F5F0" ? `0 0 30px ${bookColor}35` : "none",
+              }}
+              onMouseEnter={() => setBookColor(next())}
+              onMouseLeave={() => setBookColor("#F5F5F0")}
+            >
+              {t.servicePage.book}
+            </Link>
             <Link
               href="/#contact"
               className="inline-block px-8 py-3 rounded-full text-sm tracking-[0.1em] uppercase font-light border border-[#333] text-[#999] hover:text-[#F5F5F0] transition-all duration-400"

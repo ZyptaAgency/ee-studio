@@ -63,6 +63,7 @@ export default function Founder() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.8, delay: 0.15 }}
+            className="text-center md:text-left"
           >
             <p className="text-sm tracking-[0.25em] uppercase text-[#F2B5D4] mb-6">
               {t.founder.label}
@@ -70,7 +71,7 @@ export default function Founder() {
 
             <blockquote className="relative mb-8">
               <span
-                className="absolute -left-2 -top-6 text-6xl font-['Outfit'] leading-none select-none pointer-events-none"
+                className="hidden md:block absolute -left-2 -top-6 text-6xl font-['Outfit'] leading-none select-none pointer-events-none"
                 style={{ color: "#F2B5D420" }}
               >
                 “
@@ -89,7 +90,7 @@ export default function Founder() {
               {t.founder.p2.replace("E.E", "")}
             </p>
 
-            <div className="flex items-center gap-5">
+            <div className="flex items-center justify-center md:justify-start gap-5">
               <a
                 href="#booking"
                 className="px-8 py-3 rounded-full text-sm tracking-[0.12em] uppercase font-light border transition-all duration-300"

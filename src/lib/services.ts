@@ -5,6 +5,7 @@ import {
   Leaf,
   Users,
   PartyPopper,
+  Trophy,
 } from "lucide-react";
 import type { Lang } from "./i18n";
 
@@ -121,6 +122,22 @@ const SERVICES_FR: ServiceData[] = [
     ],
     result: "Un événement structuré, visible et valorisé, dont l'impact dépasse largement le jour J.",
   },
+  {
+    slug: "sport",
+    icon: Trophy,
+    title: "Sport",
+    shortDesc: "Stratégie et conception d'événements sportifs, production de contenu, valorisation des partenaires et développement d'écosystèmes.",
+    heroLine: "Le sport, vecteur de visibilité et de transformation.",
+    fullDesc:
+      "Nous intervenons à la croisée du marketing, de la production et de l'événementiel pour créer des formats modernes, engageants et alignés avec les standards internationaux. Le sport est un vecteur puissant de visibilité, de connexion et de transformation.",
+    details: [
+      { title: "Stratégie & Conception d'Événements Sportifs", desc: "Structuration de concepts, positionnement, expérience globale pour des événements cohérents et impactants." },
+      { title: "Production de Contenu Sportif", desc: "Captation, storytelling, interviews, formats digitaux pour valoriser les athlètes, les partenaires et l'événement." },
+      { title: "Expérience & Valorisation des Partenaires", desc: "Mise en place d'espaces, activation de marque, amélioration de l'expérience invités et sponsors." },
+      { title: "Développement d'Écosystèmes Sportifs", desc: "Contribution à des projets structurants visant à accompagner les talents, développer des opportunités et professionnaliser le secteur." },
+    ],
+    result: "Des expériences sportives modernes, visibles et structurées, capables de renforcer l'image, d'engager les audiences et de créer de nouvelles opportunités.",
+  },
 ];
 
 const SERVICES_EN: ServiceData[] = [
@@ -219,6 +236,22 @@ const SERVICES_EN: ServiceData[] = [
       { title: "Post-event Enhancement", desc: "Editing, video recap, photo selection to extend the impact over time." },
     ],
     result: "A structured, visible and enhanced event whose impact goes far beyond the day itself.",
+  },
+  {
+    slug: "sport",
+    icon: Trophy,
+    title: "Sports",
+    shortDesc: "Sports event strategy and design, content production, partner enhancement and sports ecosystem development.",
+    heroLine: "Sport, a driver of visibility and transformation.",
+    fullDesc:
+      "We work at the crossroads of marketing, production and events to create modern, engaging formats aligned with international standards. Sport is a powerful driver of visibility, connection and transformation.",
+    details: [
+      { title: "Sports Event Strategy & Design", desc: "Concept structuring, positioning, global experience for coherent and impactful events." },
+      { title: "Sports Content Production", desc: "Coverage, storytelling, interviews, digital formats to showcase athletes, partners and the event." },
+      { title: "Partner Experience & Enhancement", desc: "Setting up spaces, brand activation, improving the guest and sponsor experience." },
+      { title: "Sports Ecosystem Development", desc: "Contributing to structuring projects to support talent, develop opportunities and professionalize the sector." },
+    ],
+    result: "Modern, visible and structured sports experiences, able to strengthen image, engage audiences and create new opportunities.",
   },
 ];
 

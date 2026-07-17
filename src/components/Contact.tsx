@@ -214,7 +214,7 @@ export default function Contact() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.3 }}
-            className="space-y-10 flex flex-col justify-center"
+            className="space-y-10 flex flex-col justify-center items-center md:items-start"
           >
             {[
               {
@@ -227,8 +227,8 @@ export default function Contact() {
               {
                 icon: MessageCircle,
                 label: "WhatsApp",
-                value: "+243 XXX XXX XXX",
-                href: "https://wa.me/243XXXXXXXXX",
+                value: "+243 837 317 990",
+                href: "https://wa.me/243837317990",
                 accent: "#A8D8C8",
               },
               {
@@ -243,7 +243,7 @@ export default function Contact() {
               return (
                 <motion.div
                   key={i}
-                  className="flex items-center gap-6 group"
+                  className="flex items-center gap-6 group text-left"
                   whileHover={{ x: 6 }}
                   transition={{ duration: 0.3 }}
                 >

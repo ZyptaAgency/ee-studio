@@ -35,7 +35,7 @@ export default function Founder() {
             <div className="relative rounded-[1.75rem] overflow-hidden border border-white/10">
               <Image
                 src="/founder.png"
-                alt="Lise-Laure Zuzi"
+                alt="Lise-Laure Nzuzi Ntumba"
                 width={682}
                 height={1024}
                 quality={95}

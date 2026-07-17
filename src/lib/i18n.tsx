@@ -31,7 +31,7 @@ const translations = {
     },
     founder: {
       label: "La fondatrice",
-      name: "Lise-Laure Zuzi",
+      name: "Lise-Laure Nzuzi Ntumba",
       role: "Fondatrice & CEO",
       quote: "Je ne voulais pas créer un studio qui se contente de conseiller. Je voulais un studio qui imagine, qui produit, qui transforme et qui rend réel.",
       p1: "Un studio capable de penser une stratégie, mais surtout de la faire exister. E.E Studio, c'est ça : une vision, des idées… et leur exécution. Sans attendre les conditions parfaites, sans dépendre d'un outil. Juste la capacité de faire exister ce qui n'existait pas encore.",
@@ -193,7 +193,7 @@ const translations = {
     },
     founder: {
       label: "The founder",
-      name: "Lise-Laure Zuzi",
+      name: "Lise-Laure Nzuzi Ntumba",
       role: "Founder & CEO",
       quote: "I didn't want to create a studio that just gives advice. I wanted a studio that imagines, produces, transforms and makes things real.",
       p1: "A studio able to think a strategy, but above all to make it exist. That's what E.E Studio is: a vision, ideas… and their execution. Without waiting for perfect conditions, without depending on a single tool. Just the ability to bring into existence what did not yet exist.",

@@ -1,0 +1,77 @@
+import { Resend } from "resend";
+
+const apiKey = process.env.RESEND_API_KEY;
+const resend = apiKey ? new Resend(apiKey) : null;
+
+// Expéditeur : nécessite un domaine vérifié dans Resend pour envoyer à des tiers.
+// Par défaut on utilise l'adresse de test Resend (envoi possible vers l'email du compte).
+const FROM = process.env.RESEND_FROM || "EE Studio <onboarding@resend.dev>";
+const NOTIFY_TO = process.env.NOTIFY_EMAIL || process.env.ADMIN_EMAIL || "contact@ee-studio.info";
+
+type BookingPayload = {
+  name: string;
+  email: string;
+  phone?: string | null;
+  service: string;
+  date: string;
+  time: string;
+  message?: string | null;
+};
+
+function row(label: string, value: string) {
+  return `<tr>
+    <td style="padding:8px 16px;color:#888;font-size:13px;white-space:nowrap;vertical-align:top">${label}</td>
+    <td style="padding:8px 16px;color:#f5f5f0;font-size:14px;font-weight:500">${value}</td>
+  </tr>`;
+}
+
+export async function sendBookingNotification(b: BookingPayload) {
+  if (!resend) {
+    console.warn("[email] RESEND_API_KEY manquant — notification ignorée");
+    return { skipped: true };
+  }
+
+  const html = `
+  <div style="background:#0a0a0a;padding:32px 0;font-family:Arial,Helvetica,sans-serif">
+    <div style="max-width:520px;margin:0 auto;background:#111;border:1px solid rgba(255,255,255,0.06);border-radius:16px;overflow:hidden">
+      <div style="padding:24px 28px;border-bottom:1px solid rgba(255,255,255,0.06)">
+        <p style="margin:0;color:#A8D8C8;font-size:11px;letter-spacing:2px;text-transform:uppercase">Nouvelle demande</p>
+        <h1 style="margin:6px 0 0;color:#f5f5f0;font-size:20px">Nouveau rendez-vous reçu</h1>
+      </div>
+      <table style="width:100%;border-collapse:collapse;padding:8px">
+        ${row("Nom", b.name)}
+        ${row("Email", `<a href="mailto:${b.email}" style="color:#A8D8C8;text-decoration:none">${b.email}</a>`)}
+        ${b.phone ? row("Téléphone", `<a href="tel:${b.phone}" style="color:#A8D8C8;text-decoration:none">${b.phone}</a>`) : ""}
+        ${row("Service", b.service)}
+        ${row("Date", b.date)}
+        ${row("Heure", b.time)}
+        ${b.message ? row("Message", b.message) : ""}
+      </table>
+      <div style="padding:20px 28px;border-top:1px solid rgba(255,255,255,0.06)">
+        <a href="https://ee-studio.vercel.app/admin/rendez-vous"
+           style="display:inline-block;background:#A8D8C8;color:#0a0a0a;text-decoration:none;font-size:13px;font-weight:600;padding:12px 24px;border-radius:999px">
+          Voir dans le dashboard
+        </a>
+      </div>
+    </div>
+    <p style="text-align:center;color:#555;font-size:11px;margin-top:20px">EE Studio - Notification automatique</p>
+  </div>`;
+
+  try {
+    const result = await resend.emails.send({
+      from: FROM,
+      to: NOTIFY_TO,
+      replyTo: b.email,
+      subject: `Nouveau RDV - ${b.name} (${b.service})`,
+      html,
+    });
+    if (result.error) {
+      console.error("[email] Resend error", result.error);
+      return { error: result.error };
+    }
+    return { id: result.data?.id };
+  } catch (e) {
+    console.error("[email] send failed", e);
+    return { error: e };
+  }
+}

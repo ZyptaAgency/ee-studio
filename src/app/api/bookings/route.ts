@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
+import { sendBookingNotification } from "@/lib/email";
 
 // Public: create a booking from the site form
 export async function POST(req: NextRequest) {
@@ -37,6 +38,17 @@ export async function POST(req: NextRequest) {
         clientId: client.id,
       },
     });
+
+    // Notification email (ne bloque pas la réponse en cas d'échec)
+    await sendBookingNotification({
+      name: booking.name,
+      email: booking.email,
+      phone: booking.phone,
+      service: booking.service,
+      date: booking.date,
+      time: booking.time,
+      message: booking.message,
+    }).catch((err) => console.error("Booking email error", err));
 
     return NextResponse.json({ ok: true, id: booking.id });
   } catch (e) {

@@ -70,7 +70,7 @@ export default function LoginForm() {
                 required
                 autoComplete="email"
                 className="w-full bg-transparent border-b border-white/10 pl-7 py-3 text-base font-light text-[#F5F5F0] placeholder-[#555] outline-none focus:border-[#A8D8C8] transition-colors"
-                placeholder="contact@ee-studio.info"
+                placeholder="Adresse email"
               />
             </div>
           </div>

@@ -65,6 +65,8 @@ export default function Booking() {
     time: "",
   });
   const [confirmed, setConfirmed] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [btnColor, setBtnColor] = useState("#333");
   const [focusColors, setFocusColors] = useState<Record<string, string>>({});
 
@@ -86,10 +88,23 @@ export default function Booking() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.name && formData.email && formData.service && formData.date && formData.time) {
+    if (!(formData.name && formData.email && formData.service && formData.date && formData.time)) return;
+    setSubmitting(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) throw new Error("request failed");
       setConfirmed(true);
+    } catch {
+      setError(t.booking.error ?? "Une erreur est survenue. Réessayez.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -268,18 +283,22 @@ export default function Booking() {
                 </div>
 
                 <div className="pt-4 text-center">
+                  {error && (
+                    <p className="mb-4 text-sm text-[#F2B5D4] font-light">{error}</p>
+                  )}
                   <button
                     type="submit"
+                    disabled={submitting}
                     onMouseEnter={() => setBtnColor(next())}
                     onMouseLeave={() => setBtnColor("#333")}
-                    className="px-12 py-4 rounded-full text-sm tracking-[0.12em] uppercase font-light border transition-all duration-300"
+                    className="px-12 py-4 rounded-full text-sm tracking-[0.12em] uppercase font-light border transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{
                       borderColor: btnColor === "#333" ? "rgba(255,255,255,0.1)" : btnColor,
                       color: btnColor === "#333" ? "#BBB" : btnColor,
                       boxShadow: btnColor !== "#333" ? `0 0 30px ${btnColor}18` : "none",
                     }}
                   >
-                    {t.booking.confirm}
+                    {submitting ? "..." : t.booking.confirm}
                   </button>
                 </div>
               </motion.form>

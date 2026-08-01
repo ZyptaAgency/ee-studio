@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { AnimatePresence } from "framer-motion";
 import LoadingScreen from "./LoadingScreen";
 import CookieBanner from "./CookieBanner";
@@ -7,6 +8,17 @@ import HomeScrollRestore from "./HomeScrollRestore";
 import { I18nProvider } from "@/lib/i18n";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const isAdmin = pathname?.startsWith("/admin");
+
+  if (isAdmin) {
+    return <I18nProvider>{children}</I18nProvider>;
+  }
+
+  return <SiteShell>{children}</SiteShell>;
+}
+
+function SiteShell({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(() => {
     if (typeof window !== "undefined") {
       return !sessionStorage.getItem("ee-loaded");

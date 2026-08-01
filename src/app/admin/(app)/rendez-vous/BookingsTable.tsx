@@ -151,7 +151,7 @@ export default function BookingsTable({ bookings }: { bookings: BookingRow[] }) 
                       )}
                       {b.attachmentUrl && (
                         <a href={b.attachmentUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-[#A8D8C8] hover:underline">
-                          <Paperclip size={15} /> {b.attachmentName || "Pièce jointe (PDF)"}
+                          <Paperclip size={15} /> {b.attachmentName || "Pièce jointe"}
                         </a>
                       )}
                       <p className="text-xs text-[#666]">

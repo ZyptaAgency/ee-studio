@@ -1,8 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin, ATTACHMENT_BUCKET } from "@/lib/supabase";
 
-const MAX_SIZE = 10 * 1024 * 1024; // 10 MB
-const ALLOWED = ["application/pdf"];
+const MAX_SIZE = 15 * 1024 * 1024; // 15 MB
+const ALLOWED = [
+  "application/pdf",
+  "image/png",
+  "image/jpeg",
+  "image/webp",
+  "image/gif",
+  "image/heic",
+  "image/heif",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/vnd.ms-excel",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "application/vnd.ms-powerpoint",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  "text/plain",
+  "text/csv",
+];
 
 export async function POST(req: NextRequest) {
   if (!supabaseAdmin) {
@@ -16,10 +32,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Aucun fichier" }, { status: 400 });
     }
     if (!ALLOWED.includes(file.type)) {
-      return NextResponse.json({ error: "Seuls les PDF sont acceptés" }, { status: 400 });
+      return NextResponse.json({ error: "Type de fichier non pris en charge" }, { status: 400 });
     }
     if (file.size > MAX_SIZE) {
-      return NextResponse.json({ error: "Fichier trop volumineux (max 10 Mo)" }, { status: 400 });
+      return NextResponse.json({ error: "Fichier trop volumineux (max 15 Mo)" }, { status: 400 });
     }
 
     // Ensure the bucket exists (public so the admin can open the link).

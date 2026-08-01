@@ -97,12 +97,8 @@ export default function Booking() {
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (!f) return;
-    if (f.type !== "application/pdf") {
-      setError("Seuls les fichiers PDF sont acceptés.");
-      return;
-    }
-    if (f.size > 10 * 1024 * 1024) {
-      setError("Fichier trop volumineux (max 10 Mo).");
+    if (f.size > 15 * 1024 * 1024) {
+      setError(lang === "fr" ? "Fichier trop volumineux (max 15 Mo)." : "File too large (max 15 MB).");
       return;
     }
     setError(null);
@@ -264,7 +260,7 @@ export default function Booking() {
                 <textarea placeholder={t.booking.message + optional} value={formData.message} onChange={(e) => setFormData((p) => ({ ...p, message: e.target.value }))} onFocus={() => handleFocus("bmsg")} onBlur={() => handleBlur("bmsg")} rows={3} className="w-full bg-transparent border-b py-4 text-base font-light text-[#F5F5F0] placeholder-[#555] outline-none transition-all duration-300 focus:placeholder-[#888] resize-none" style={inputStyle("bmsg")} />
 
                 <div>
-                  <input ref={fileInputRef} type="file" accept="application/pdf" onChange={onFileChange} className="hidden" />
+                  <input ref={fileInputRef} type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,image/*" onChange={onFileChange} className="hidden" />
                   {!file ? (
                     <button type="button" onClick={() => fileInputRef.current?.click()} className="flex items-center gap-3 text-sm text-[#888] hover:text-[#A8D8C8] transition-colors group">
                       <span className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center group-hover:border-[#A8D8C8]/40">

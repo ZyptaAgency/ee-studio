@@ -58,7 +58,7 @@ export async function sendBookingNotification(b: BookingPayload) {
         ${b.date ? row("Date", b.date) : ""}
         ${b.time ? row("Heure", b.time) : ""}
         ${b.message ? row("Message", b.message) : ""}
-        ${b.attachmentUrl ? row("Pièce jointe", `<a href="${b.attachmentUrl}" style="color:#A8D8C8;text-decoration:none">${b.attachmentName || "Télécharger le PDF"}</a>`) : ""}
+        ${b.attachmentUrl ? row("Pièce jointe", `<a href="${b.attachmentUrl}" style="color:#A8D8C8;text-decoration:none">${b.attachmentName || "Télécharger le fichier"}</a>`) : ""}
       </table>
       <div style="padding:20px 28px;border-top:1px solid rgba(255,255,255,0.06)">
         <a href="https://ee-studio.vercel.app/admin/rendez-vous"

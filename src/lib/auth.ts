@@ -32,6 +32,37 @@ export async function verifySessionToken(token: string) {
   }
 }
 
+// Short-lived token used for the "forgot password" magic login link.
+export async function createMagicToken(email: string) {
+  return new SignJWT({ email, purpose: "magic" })
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime("15m")
+    .sign(getSecret());
+}
+
+export async function verifyMagicToken(token: string) {
+  try {
+    const { payload } = await jwtVerify(token, getSecret());
+    if (payload.purpose !== "magic") return null;
+    return payload as { email: string; purpose: string };
+  } catch {
+    return null;
+  }
+}
+
+export const SESSION_MAX_AGE = MAX_AGE;
+
+export function sessionCookieOptions() {
+  return {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax" as const,
+    path: "/",
+    maxAge: MAX_AGE,
+  };
+}
+
 export async function setSessionCookie(token: string) {
   const store = await cookies();
   store.set(COOKIE_NAME, token, {

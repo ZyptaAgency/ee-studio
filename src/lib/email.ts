@@ -75,3 +75,49 @@ export async function sendBookingNotification(b: BookingPayload) {
     return { error: e };
   }
 }
+
+export async function sendMagicLink(to: string, url: string) {
+  if (!resend) {
+    console.warn("[email] RESEND_API_KEY manquant — lien magique non envoyé");
+    return { skipped: true };
+  }
+
+  const html = `
+  <div style="background:#0a0a0a;padding:32px 0;font-family:Arial,Helvetica,sans-serif">
+    <div style="max-width:480px;margin:0 auto;background:#111;border:1px solid rgba(255,255,255,0.06);border-radius:16px;overflow:hidden">
+      <div style="padding:28px 28px 8px">
+        <p style="margin:0;color:#A8D8C8;font-size:11px;letter-spacing:2px;text-transform:uppercase">EE Studio - Admin</p>
+        <h1 style="margin:8px 0 0;color:#f5f5f0;font-size:20px">Connexion à ton dashboard</h1>
+        <p style="color:#999;font-size:14px;line-height:1.6;margin-top:12px">
+          Clique sur le bouton ci-dessous pour te connecter. Ce lien est valable <strong style="color:#f5f5f0">15 minutes</strong> et ne fonctionne qu'une fois.
+        </p>
+      </div>
+      <div style="padding:12px 28px 28px">
+        <a href="${url}"
+           style="display:inline-block;background:#A8D8C8;color:#0a0a0a;text-decoration:none;font-size:14px;font-weight:600;padding:14px 28px;border-radius:999px">
+          Se connecter au dashboard
+        </a>
+        <p style="color:#555;font-size:12px;margin-top:20px;line-height:1.5">
+          Si tu n'es pas à l'origine de cette demande, ignore simplement cet email.
+        </p>
+      </div>
+    </div>
+  </div>`;
+
+  try {
+    const result = await resend.emails.send({
+      from: FROM,
+      to,
+      subject: "Ton lien de connexion - EE Studio",
+      html,
+    });
+    if (result.error) {
+      console.error("[email] magic link error", result.error);
+      return { error: result.error };
+    }
+    return { id: result.data?.id };
+  } catch (e) {
+    console.error("[email] magic link failed", e);
+    return { error: e };
+  }
+}

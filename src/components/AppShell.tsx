@@ -9,9 +9,9 @@ import { I18nProvider } from "@/lib/i18n";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isAdmin = pathname?.startsWith("/admin");
+  const isBare = pathname?.startsWith("/admin") || pathname?.startsWith("/rdv");
 
-  if (isAdmin) {
+  if (isBare) {
     return <I18nProvider>{children}</I18nProvider>;
   }
 

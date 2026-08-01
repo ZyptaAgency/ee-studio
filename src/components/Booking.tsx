@@ -3,14 +3,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { usePastelRotation } from "@/hooks/usePastelRotation";
 import { useI18n } from "@/lib/i18n";
 import { getServices } from "@/lib/services";
-import { useState, useMemo, useRef } from "react";
-import { Calendar, Clock, CheckCircle, Download, ExternalLink, Paperclip, X } from "lucide-react";
+import { useState, useMemo, useEffect, useRef } from "react";
+import { Calendar, Clock, CheckCircle, Download, ExternalLink, Paperclip, X, Phone, MapPin } from "lucide-react";
 import FloatingShapes from "./FloatingShapes";
-
-const TIME_SLOTS = [
-  "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
-  "14:00", "14:30", "15:00", "15:30", "16:00", "16:30",
-];
+import { TIME_SLOTS, getAvailableDates, type MeetingType } from "@/lib/booking-utils";
 
 function generateGoogleCalendarUrl(name: string, email: string, service: string, date: string, time: string) {
   const start = new Date(`${date}T${time}:00`);
@@ -57,6 +53,7 @@ export default function Booking() {
     email: "",
     phone: "",
     company: "",
+    meetingType: "call" as MeetingType,
     service: "",
     date: "",
     time: "",
@@ -69,11 +66,23 @@ export default function Booking() {
   const [btnColor, setBtnColor] = useState("#333");
   const [focusColors, setFocusColors] = useState<Record<string, string>>({});
 
-  const minDate = useMemo(() => {
-    const d = new Date();
-    d.setDate(d.getDate() + 1);
-    return d.toISOString().split("T")[0];
-  }, []);
+  const availableDates = useMemo(
+    () => getAvailableDates(formData.meetingType === "in_person"),
+    [formData.meetingType]
+  );
+
+  useEffect(() => {
+    if (formData.date && !availableDates.includes(formData.date)) {
+      setFormData((p) => ({ ...p, date: "" }));
+    }
+  }, [availableDates, formData.date]);
+
+  const formatDate = (iso: string) =>
+    new Date(`${iso}T00:00:00`).toLocaleDateString(lang === "fr" ? "fr-FR" : "en-US", {
+      weekday: "short",
+      day: "numeric",
+      month: "long",
+    });
 
   const fullName = `${formData.firstName} ${formData.lastName}`.trim();
 
@@ -204,12 +213,40 @@ export default function Booking() {
                   </div>
                 </div>
 
+                <div>
+                  <label className="text-[11px] tracking-[0.15em] uppercase text-[#555] mb-3 block">{t.booking.meeting_type}</label>
+                  <div className="grid grid-cols-2 gap-4">
+                    {([
+                      { key: "call" as MeetingType, icon: <Phone size={15} />, label: t.booking.type_call },
+                      { key: "in_person" as MeetingType, icon: <MapPin size={15} />, label: t.booking.type_in_person },
+                    ]).map((opt) => {
+                      const active = formData.meetingType === opt.key;
+                      return (
+                        <button key={opt.key} type="button" onClick={() => setFormData((p) => ({ ...p, meetingType: opt.key }))} className={`flex items-center justify-center gap-2.5 py-3.5 rounded-xl text-sm font-light border transition-all duration-300 ${active ? "bg-[#A8D8C8]/12 border-[#A8D8C8]/50 text-[#F5F5F0]" : "border-white/[0.08] text-[#999] hover:border-white/20"}`}>
+                          {opt.icon}{opt.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {formData.meetingType === "call" && (
+                    <p className="text-[11px] text-[#666] mt-2.5">{t.booking.call_hint}</p>
+                  )}
+                </div>
+
                 <div className="grid grid-cols-2 gap-6">
                   <div className="relative">
                     <label className="text-[11px] tracking-[0.15em] uppercase text-[#555] mb-2 block">
                       <Calendar size={12} className="inline mr-2 -mt-0.5" />{t.booking.date}
                     </label>
-                    <input type="date" value={formData.date} min={minDate} onChange={(e) => setFormData((p) => ({ ...p, date: e.target.value }))} onFocus={() => handleFocus("bdate")} onBlur={() => handleBlur("bdate")} className="w-full bg-transparent border-b py-3 text-base font-light text-[#F5F5F0] outline-none transition-all duration-300 [color-scheme:dark]" style={inputStyle("bdate")} />
+                    <select value={formData.date} onChange={(e) => setFormData((p) => ({ ...p, date: e.target.value }))} onFocus={() => handleFocus("bdate")} onBlur={() => handleBlur("bdate")} className="w-full bg-transparent border-b py-3 text-base font-light text-[#F5F5F0] outline-none transition-all duration-300 appearance-none cursor-pointer [color-scheme:dark]" style={inputStyle("bdate")}>
+                      <option value="" className="bg-[#111] text-[#555]">{t.booking.date_placeholder}</option>
+                      {availableDates.map((d) => (
+                        <option key={d} value={d} className="bg-[#111] text-[#F5F5F0]">{formatDate(d)}</option>
+                      ))}
+                    </select>
+                    <div className="absolute right-0 bottom-4 pointer-events-none text-[#555]">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M3 4.5L6 7.5L9 4.5" /></svg>
+                    </div>
                   </div>
                   <div>
                     <label className="text-[11px] tracking-[0.15em] uppercase text-[#555] mb-2 block">

@@ -12,6 +12,7 @@ export default async function RendezVousPage() {
     email: b.email,
     phone: b.phone,
     company: b.company,
+    meetingType: b.meetingType,
     service: b.service,
     date: b.date,
     time: b.time,

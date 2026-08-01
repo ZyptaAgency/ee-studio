@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Mail, Phone, Trash2, ChevronDown, Building2, Paperclip } from "lucide-react";
+import { Mail, Phone, Trash2, ChevronDown, Building2, Paperclip, MapPin } from "lucide-react";
 
 export type BookingRow = {
   id: string;
@@ -9,6 +9,7 @@ export type BookingRow = {
   email: string;
   phone: string | null;
   company: string | null;
+  meetingType: string | null;
   service: string | null;
   date: string | null;
   time: string | null;
@@ -26,6 +27,8 @@ const STATUS_LABELS: Record<string, string> = {
   COMPLETED: "Terminé",
   CANCELLED: "Annulé",
 };
+const MEETING_LABELS: Record<string, string> = { call: "Appel", in_person: "Présentiel" };
+
 const STATUS_STYLES: Record<string, string> = {
   PENDING: "bg-[#F2D5A8]/15 text-[#F2D5A8] border-[#F2D5A8]/20",
   CONFIRMED: "bg-[#A8D8C8]/15 text-[#A8D8C8] border-[#A8D8C8]/20",
@@ -91,7 +94,14 @@ export default function BookingsTable({ bookings }: { bookings: BookingRow[] }) 
                 onClick={() => setExpanded(expanded === b.id ? null : b.id)}
               >
                 <div className="min-w-0">
-                  <p className="text-sm font-medium truncate">{b.name}</p>
+                  <p className="text-sm font-medium truncate flex items-center gap-2">
+                    {b.name}
+                    {b.meetingType && (
+                      <span className="text-[10px] px-2 py-0.5 rounded-full border border-white/10 text-[#999] shrink-0">
+                        {MEETING_LABELS[b.meetingType] ?? b.meetingType}
+                      </span>
+                    )}
+                  </p>
                   <p className="text-xs text-[#777] truncate md:hidden">{b.service || "Demande générale"}</p>
                 </div>
                 <p className="text-sm text-[#aaa] truncate hidden md:block">{b.service || "Demande générale"}</p>
@@ -132,6 +142,11 @@ export default function BookingsTable({ bookings }: { bookings: BookingRow[] }) 
                       {b.company && (
                         <p className="flex items-center gap-2 text-[#aaa]">
                           <Building2 size={15} /> {b.company}
+                        </p>
+                      )}
+                      {b.meetingType && (
+                        <p className="flex items-center gap-2 text-[#aaa]">
+                          <MapPin size={15} /> {MEETING_LABELS[b.meetingType] ?? b.meetingType}
                         </p>
                       )}
                       {b.attachmentUrl && (

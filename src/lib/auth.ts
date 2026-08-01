@@ -51,6 +51,26 @@ export async function verifyMagicToken(token: string) {
   }
 }
 
+// Long-lived token embedded in the client's confirmation email so they can
+// cancel or reschedule their own booking without logging in.
+export async function createBookingToken(bookingId: string) {
+  return new SignJWT({ bookingId, purpose: "booking" })
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime("120d")
+    .sign(getSecret());
+}
+
+export async function verifyBookingToken(token: string) {
+  try {
+    const { payload } = await jwtVerify(token, getSecret());
+    if (payload.purpose !== "booking") return null;
+    return payload as { bookingId: string; purpose: string };
+  } catch {
+    return null;
+  }
+}
+
 export const SESSION_MAX_AGE = MAX_AGE;
 
 export function sessionCookieOptions() {

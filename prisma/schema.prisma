@@ -49,6 +49,7 @@ model Booking {
   email          String
   phone          String?
   company        String?
+  meetingType    String?
   service        String?
   date           String?
   time           String?

@@ -1,4 +1,10 @@
 import { Resend } from "resend";
+import { MEETING_TYPE_LABELS, type MeetingType } from "./booking-utils";
+
+function meetingLabel(type?: string | null) {
+  if (type === "call" || type === "in_person") return MEETING_TYPE_LABELS[type as MeetingType].fr;
+  return null;
+}
 
 const apiKey = process.env.RESEND_API_KEY;
 const resend = apiKey ? new Resend(apiKey) : null;
@@ -13,6 +19,7 @@ type BookingPayload = {
   email: string;
   phone?: string | null;
   company?: string | null;
+  meetingType?: string | null;
   service?: string | null;
   date?: string | null;
   time?: string | null;
@@ -46,6 +53,7 @@ export async function sendBookingNotification(b: BookingPayload) {
         ${row("Email", `<a href="mailto:${b.email}" style="color:#A8D8C8;text-decoration:none">${b.email}</a>`)}
         ${b.phone ? row("Téléphone", `<a href="tel:${b.phone}" style="color:#A8D8C8;text-decoration:none">${b.phone}</a>`) : ""}
         ${b.company ? row("Entreprise", b.company) : ""}
+        ${meetingLabel(b.meetingType) ? row("Type", meetingLabel(b.meetingType)!) : ""}
         ${b.service ? row("Service", b.service) : ""}
         ${b.date ? row("Date", b.date) : ""}
         ${b.time ? row("Heure", b.time) : ""}
@@ -84,9 +92,12 @@ export async function sendBookingNotification(b: BookingPayload) {
 type ConfirmationPayload = {
   firstName: string;
   email: string;
+  meetingType?: string | null;
   service?: string | null;
   date?: string | null;
   time?: string | null;
+  cancelUrl?: string;
+  rescheduleUrl?: string;
 };
 
 export async function sendBookingConfirmation(c: ConfirmationPayload) {
@@ -95,13 +106,26 @@ export async function sendBookingConfirmation(c: ConfirmationPayload) {
     return { skipped: true };
   }
 
+  const typeLabel = meetingLabel(c.meetingType);
   const details =
-    c.date || c.time || c.service
+    c.date || c.time || c.service || typeLabel
       ? `<table style="width:100%;border-collapse:collapse;margin-top:16px">
+          ${typeLabel ? row("Type", typeLabel) : ""}
           ${c.service ? row("Service", c.service) : ""}
           ${c.date ? row("Date", c.date) : ""}
           ${c.time ? row("Heure", c.time) : ""}
         </table>`
+      : "";
+
+  const manageBlock =
+    c.cancelUrl || c.rescheduleUrl
+      ? `<div style="padding:8px 28px 24px">
+          <p style="color:#777;font-size:12px;margin:0 0 12px">Besoin de changer quelque chose ?</p>
+          <table role="presentation" cellpadding="0" cellspacing="0"><tr>
+            ${c.rescheduleUrl ? `<td style="padding-right:10px"><a href="${c.rescheduleUrl}" style="display:inline-block;background:#A8D8C8;color:#0a0a0a;text-decoration:none;font-size:13px;font-weight:600;padding:11px 20px;border-radius:999px">Replanifier</a></td>` : ""}
+            ${c.cancelUrl ? `<td><a href="${c.cancelUrl}" style="display:inline-block;background:transparent;color:#F2B5D4;text-decoration:none;font-size:13px;font-weight:600;padding:11px 20px;border-radius:999px;border:1px solid rgba(242,181,212,0.4)">Annuler</a></td>` : ""}
+          </tr></table>
+        </div>`
       : "";
 
   const html = `
@@ -115,7 +139,8 @@ export async function sendBookingConfirmation(c: ConfirmationPayload) {
         </p>
       </div>
       <div style="padding:0 28px 8px">${details}</div>
-      <div style="padding:16px 28px 28px">
+      ${manageBlock}
+      <div style="padding:16px 28px 28px;border-top:1px solid rgba(255,255,255,0.06)">
         <p style="color:#999;font-size:14px;line-height:1.7;margin:0">
           Une question en attendant ? Réponds simplement à cet email ou écris-nous sur WhatsApp au
           <strong style="color:#f5f5f0">+243 837 317 990</strong>.
@@ -123,7 +148,7 @@ export async function sendBookingConfirmation(c: ConfirmationPayload) {
       </div>
       <div style="padding:18px 28px;border-top:1px solid rgba(255,255,255,0.06)">
         <p style="margin:0;color:#A8D8C8;font-size:13px;font-weight:600">EE Studio</p>
-        <p style="margin:4px 0 0;color:#666;font-size:12px">Stratégie. Création. Impact. — Kinshasa, RDC</p>
+        <p style="margin:4px 0 0;color:#666;font-size:12px">Stratégie. Création. Impact. - Kinshasa, RDC</p>
       </div>
     </div>
   </div>`;
@@ -143,6 +168,25 @@ export async function sendBookingConfirmation(c: ConfirmationPayload) {
     return { id: result.data?.id };
   } catch (e) {
     console.error("[email] confirmation failed", e);
+    return { error: e };
+  }
+}
+
+export async function sendAdminNotice(subject: string, message: string) {
+  if (!resend) return { skipped: true };
+  const html = `
+  <div style="background:#0a0a0a;padding:32px 0;font-family:Arial,Helvetica,sans-serif">
+    <div style="max-width:480px;margin:0 auto;background:#111;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px">
+      <p style="margin:0;color:#A8D8C8;font-size:11px;letter-spacing:2px;text-transform:uppercase">EE Studio - Admin</p>
+      <p style="color:#f5f5f0;font-size:15px;line-height:1.7;margin-top:14px">${message}</p>
+      <a href="https://ee-studio.vercel.app/admin/rendez-vous" style="display:inline-block;margin-top:18px;background:#A8D8C8;color:#0a0a0a;text-decoration:none;font-size:13px;font-weight:600;padding:11px 22px;border-radius:999px">Ouvrir le dashboard</a>
+    </div>
+  </div>`;
+  try {
+    const result = await resend.emails.send({ from: FROM, to: NOTIFY_TO, subject, html });
+    if (result.error) return { error: result.error };
+    return { id: result.data?.id };
+  } catch (e) {
     return { error: e };
   }
 }

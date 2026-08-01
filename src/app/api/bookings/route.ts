@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getSession } from "@/lib/auth";
+import { getSession, createBookingToken } from "@/lib/auth";
 import { sendBookingNotification, sendBookingConfirmation } from "@/lib/email";
+import { isWeekendISO } from "@/lib/booking-utils";
 
 // Public: create a booking from the site form
 export async function POST(req: NextRequest) {
@@ -11,6 +12,7 @@ export async function POST(req: NextRequest) {
       firstName,
       lastName,
       email,
+      meetingType,
       service,
       date,
       time,
@@ -24,10 +26,19 @@ export async function POST(req: NextRequest) {
     const first = firstName ? String(firstName).trim() : "";
     const last = lastName ? String(lastName).trim() : "";
     const fullName = `${first} ${last}`.trim();
+    const type = meetingType === "in_person" ? "in_person" : "call";
 
     if (!first || !last || !email) {
       return NextResponse.json(
         { error: "Prénom, nom et email sont requis" },
+        { status: 400 }
+      );
+    }
+
+    // Weekends are only allowed for in-person meetings.
+    if (date && type === "call" && isWeekendISO(String(date))) {
+      return NextResponse.json(
+        { error: "Les appels ne sont pas disponibles le week-end. Choisissez un jour de semaine ou un rendez-vous en présentiel." },
         { status: 400 }
       );
     }
@@ -54,6 +65,7 @@ export async function POST(req: NextRequest) {
         email: normalizedEmail,
         phone: phone ? String(phone).trim() : null,
         company: company ? String(company).trim() : null,
+        meetingType: type,
         service: service ? String(service).trim() : null,
         date: date ? String(date) : null,
         time: time ? String(time) : null,
@@ -64,6 +76,12 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    // Manage links for the client's confirmation email
+    const origin = new URL(req.url).origin;
+    const token = await createBookingToken(booking.id);
+    const cancelUrl = `${origin}/rdv/annuler?token=${encodeURIComponent(token)}`;
+    const rescheduleUrl = `${origin}/rdv/replanifier?token=${encodeURIComponent(token)}`;
+
     // Emails (ne bloquent jamais la réponse)
     await Promise.allSettled([
       sendBookingNotification({
@@ -71,6 +89,7 @@ export async function POST(req: NextRequest) {
         email: booking.email,
         phone: booking.phone,
         company: booking.company,
+        meetingType: booking.meetingType,
         service: booking.service,
         date: booking.date,
         time: booking.time,
@@ -81,9 +100,12 @@ export async function POST(req: NextRequest) {
       sendBookingConfirmation({
         firstName: first,
         email: booking.email,
+        meetingType: booking.meetingType,
         service: booking.service,
         date: booking.date,
         time: booking.time,
+        cancelUrl,
+        rescheduleUrl,
       }),
     ]).catch((err) => console.error("Booking email error", err));
 

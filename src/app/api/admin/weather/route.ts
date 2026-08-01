@@ -1,11 +1,8 @@
 import { NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
+import { getSettings } from "@/lib/settings";
 
 export const revalidate = 0;
-
-const CITY_COORDS: Record<string, { lat: number; lon: number; label: string }> = {
-  kinshasa: { lat: -4.4419, lon: 15.2663, label: "Kinshasa" },
-};
 
 const WEATHER_LABELS: Record<number, string> = {
   0: "Ciel dégagé",
@@ -31,12 +28,27 @@ const WEATHER_LABELS: Record<number, string> = {
   99: "Orage avec grêle",
 };
 
+async function geocode(city: string): Promise<{ lat: number; lon: number; label: string } | null> {
+  try {
+    const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=fr&format=json`;
+    const res = await fetch(url, { next: { revalidate: 86400 } });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const r = data.results?.[0];
+    if (!r) return null;
+    return { lat: r.latitude, lon: r.longitude, label: r.name };
+  } catch {
+    return null;
+  }
+}
+
 export async function GET() {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
 
-  const cityKey = (process.env.DASHBOARD_CITY || "Kinshasa").toLowerCase();
-  const coords = CITY_COORDS[cityKey] || CITY_COORDS.kinshasa;
+  const settings = await getSettings();
+  const cityName = settings.weatherCity || process.env.DASHBOARD_CITY || "Kinshasa";
+  const coords = (await geocode(cityName)) || { lat: -4.4419, lon: 15.2663, label: "Kinshasa" };
 
   try {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=auto`;

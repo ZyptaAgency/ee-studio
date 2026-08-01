@@ -3,13 +3,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { LayoutDashboard, CalendarClock, Users, FileText, LogOut, Menu, X } from "lucide-react";
+import { LayoutDashboard, CalendarClock, Users, FileText, CheckSquare, Settings, LogOut, Menu, X } from "lucide-react";
 
 const LINKS = [
   { href: "/admin", label: "Vue d'ensemble", icon: LayoutDashboard, exact: true },
   { href: "/admin/rendez-vous", label: "Rendez-vous", icon: CalendarClock },
   { href: "/admin/clients", label: "Clients", icon: Users },
   { href: "/admin/factures", label: "Factures", icon: FileText },
+  { href: "/admin/taches", label: "Tâches", icon: CheckSquare },
+  { href: "/admin/parametres", label: "Paramètres", icon: Settings },
 ];
 
 export default function AdminSidebar({ email }: { email: string }) {

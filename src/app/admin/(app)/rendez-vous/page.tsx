@@ -11,10 +11,13 @@ export default async function RendezVousPage() {
     name: b.name,
     email: b.email,
     phone: b.phone,
+    company: b.company,
     service: b.service,
     date: b.date,
     time: b.time,
     message: b.message,
+    attachmentUrl: b.attachmentUrl,
+    attachmentName: b.attachmentName,
     status: b.status,
     createdAt: b.createdAt.toISOString(),
   }));

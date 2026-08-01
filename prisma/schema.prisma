@@ -20,6 +20,12 @@ enum InvoiceStatus {
   OVERDUE
 }
 
+enum TodoPriority {
+  HIGH
+  MEDIUM
+  LOW
+}
+
 model Client {
   id        String    @id @default(cuid())
   name      String
@@ -36,22 +42,55 @@ model Client {
 }
 
 model Booking {
-  id        String        @id @default(cuid())
-  name      String
-  email     String
-  phone     String?
-  service   String
-  date      String
-  time      String
-  message   String?
-  status    BookingStatus @default(PENDING)
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  client    Client?       @relation(fields: [clientId], references: [id])
-  clientId  String?
+  id             String        @id @default(cuid())
+  firstName      String?
+  lastName       String?
+  name           String
+  email          String
+  phone          String?
+  company        String?
+  service        String?
+  date           String?
+  time           String?
+  message        String?
+  attachmentUrl  String?
+  attachmentName String?
+  status         BookingStatus @default(PENDING)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  client         Client?       @relation(fields: [clientId], references: [id])
+  clientId       String?
 
   @@index([status])
   @@index([createdAt])
+}
+
+model Settings {
+  id              String   @id @default("default")
+  companyName     String   @default("EE Studio")
+  companyEmail    String?
+  companyPhone    String?
+  companyAddress  String?
+  taxId           String?
+  logo            String?
+  defaultCurrency String   @default("USD")
+  defaultTaxRate  Float    @default(0)
+  invoiceNotes    String?
+  weatherCity     String   @default("Kinshasa")
+  revenueGoal     Float    @default(0)
+  updatedAt       DateTime @updatedAt
+}
+
+model Todo {
+  id        String       @id @default(cuid())
+  title     String
+  done      Boolean      @default(false)
+  priority  TodoPriority @default(MEDIUM)
+  dueDate   DateTime?
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@index([done])
 }
 
 model Invoice {

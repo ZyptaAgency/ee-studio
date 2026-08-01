@@ -12,10 +12,13 @@ type BookingPayload = {
   name: string;
   email: string;
   phone?: string | null;
-  service: string;
-  date: string;
-  time: string;
+  company?: string | null;
+  service?: string | null;
+  date?: string | null;
+  time?: string | null;
   message?: string | null;
+  attachmentUrl?: string | null;
+  attachmentName?: string | null;
 };
 
 function row(label: string, value: string) {
@@ -42,10 +45,12 @@ export async function sendBookingNotification(b: BookingPayload) {
         ${row("Nom", b.name)}
         ${row("Email", `<a href="mailto:${b.email}" style="color:#A8D8C8;text-decoration:none">${b.email}</a>`)}
         ${b.phone ? row("Téléphone", `<a href="tel:${b.phone}" style="color:#A8D8C8;text-decoration:none">${b.phone}</a>`) : ""}
-        ${row("Service", b.service)}
-        ${row("Date", b.date)}
-        ${row("Heure", b.time)}
+        ${b.company ? row("Entreprise", b.company) : ""}
+        ${b.service ? row("Service", b.service) : ""}
+        ${b.date ? row("Date", b.date) : ""}
+        ${b.time ? row("Heure", b.time) : ""}
         ${b.message ? row("Message", b.message) : ""}
+        ${b.attachmentUrl ? row("Pièce jointe", `<a href="${b.attachmentUrl}" style="color:#A8D8C8;text-decoration:none">${b.attachmentName || "Télécharger le PDF"}</a>`) : ""}
       </table>
       <div style="padding:20px 28px;border-top:1px solid rgba(255,255,255,0.06)">
         <a href="https://ee-studio.vercel.app/admin/rendez-vous"
@@ -62,7 +67,7 @@ export async function sendBookingNotification(b: BookingPayload) {
       from: FROM,
       to: NOTIFY_TO,
       replyTo: b.email,
-      subject: `Nouveau RDV - ${b.name} (${b.service})`,
+      subject: b.service ? `Nouvelle demande - ${b.name} (${b.service})` : `Nouvelle demande - ${b.name}`,
       html,
     });
     if (result.error) {
@@ -72,6 +77,72 @@ export async function sendBookingNotification(b: BookingPayload) {
     return { id: result.data?.id };
   } catch (e) {
     console.error("[email] send failed", e);
+    return { error: e };
+  }
+}
+
+type ConfirmationPayload = {
+  firstName: string;
+  email: string;
+  service?: string | null;
+  date?: string | null;
+  time?: string | null;
+};
+
+export async function sendBookingConfirmation(c: ConfirmationPayload) {
+  if (!resend) {
+    console.warn("[email] RESEND_API_KEY manquant — confirmation ignorée");
+    return { skipped: true };
+  }
+
+  const details =
+    c.date || c.time || c.service
+      ? `<table style="width:100%;border-collapse:collapse;margin-top:16px">
+          ${c.service ? row("Service", c.service) : ""}
+          ${c.date ? row("Date", c.date) : ""}
+          ${c.time ? row("Heure", c.time) : ""}
+        </table>`
+      : "";
+
+  const html = `
+  <div style="background:#0a0a0a;padding:32px 0;font-family:Arial,Helvetica,sans-serif">
+    <div style="max-width:520px;margin:0 auto;background:#111;border:1px solid rgba(255,255,255,0.06);border-radius:16px;overflow:hidden">
+      <div style="padding:28px 28px 8px">
+        <p style="margin:0;color:#A8D8C8;font-size:11px;letter-spacing:2px;text-transform:uppercase">EE Studio</p>
+        <h1 style="margin:8px 0 0;color:#f5f5f0;font-size:22px">Merci ${c.firstName} !</h1>
+        <p style="color:#999;font-size:14px;line-height:1.7;margin-top:14px">
+          Nous avons bien reçu ta demande. Notre équipe revient vers toi très vite pour confirmer les détails.
+        </p>
+      </div>
+      <div style="padding:0 28px 8px">${details}</div>
+      <div style="padding:16px 28px 28px">
+        <p style="color:#999;font-size:14px;line-height:1.7;margin:0">
+          Une question en attendant ? Réponds simplement à cet email ou écris-nous sur WhatsApp au
+          <strong style="color:#f5f5f0">+243 837 317 990</strong>.
+        </p>
+      </div>
+      <div style="padding:18px 28px;border-top:1px solid rgba(255,255,255,0.06)">
+        <p style="margin:0;color:#A8D8C8;font-size:13px;font-weight:600">EE Studio</p>
+        <p style="margin:4px 0 0;color:#666;font-size:12px">Stratégie. Création. Impact. — Kinshasa, RDC</p>
+      </div>
+    </div>
+  </div>`;
+
+  try {
+    const result = await resend.emails.send({
+      from: FROM,
+      to: c.email,
+      replyTo: NOTIFY_TO,
+      subject: "Nous avons bien reçu ta demande - EE Studio",
+      html,
+    });
+    if (result.error) {
+      console.error("[email] confirmation error", result.error);
+      return { error: result.error };
+    }
+    return { id: result.data?.id };
+  } catch (e) {
+    console.error("[email] confirmation failed", e);
     return { error: e };
   }
 }

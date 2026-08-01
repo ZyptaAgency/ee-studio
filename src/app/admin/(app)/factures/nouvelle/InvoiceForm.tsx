@@ -14,14 +14,22 @@ type Line = { description: string; quantity: string; unitPrice: string };
 
 const CURRENCIES = ["USD", "EUR", "CDF"];
 
-export default function InvoiceForm({ clients }: { clients: ClientOption[] }) {
+export default function InvoiceForm({
+  clients,
+  defaultCurrency = "USD",
+  defaultTaxRate = 0,
+}: {
+  clients: ClientOption[];
+  defaultCurrency?: string;
+  defaultTaxRate?: number;
+}) {
   const router = useRouter();
   const [clientId, setClientId] = useState("");
   const [clientName, setClientName] = useState("");
   const [clientEmail, setClientEmail] = useState("");
   const [clientAddr, setClientAddr] = useState("");
-  const [currency, setCurrency] = useState("USD");
-  const [taxRate, setTaxRate] = useState("0");
+  const [currency, setCurrency] = useState(defaultCurrency);
+  const [taxRate, setTaxRate] = useState(String(defaultTaxRate));
   const [dueDate, setDueDate] = useState("");
   const [notes, setNotes] = useState("");
   const [status, setStatus] = useState("DRAFT");

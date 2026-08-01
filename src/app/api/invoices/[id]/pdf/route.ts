@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import React from "react";
-import { Document, Page, Text, View, StyleSheet, renderToBuffer, type DocumentProps } from "@react-pdf/renderer";
+import { Document, Page, Text, View, Image, StyleSheet, renderToBuffer, type DocumentProps } from "@react-pdf/renderer";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
+import { getSettings } from "@/lib/settings";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +12,7 @@ const styles = StyleSheet.create({
   header: { flexDirection: "row", justifyContent: "space-between", marginBottom: 40 },
   brand: { fontSize: 22, fontWeight: "bold", color: "#111" },
   brandSub: { fontSize: 9, color: "#777", marginTop: 4 },
+  logo: { width: 120, height: 44, objectFit: "contain", marginBottom: 8 },
   invoiceTitle: { fontSize: 16, fontWeight: "bold", textAlign: "right" },
   meta: { fontSize: 9, color: "#555", textAlign: "right", marginTop: 4 },
   section: { flexDirection: "row", justifyContent: "space-between", marginBottom: 30 },
@@ -65,6 +67,12 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
   const inv = await prisma.invoice.findUnique({ where: { id }, include: { lines: true } });
   if (!inv) return NextResponse.json({ error: "Introuvable" }, { status: 404 });
 
+  const settings = await getSettings();
+  const companyLine2 = [settings.companyAddress, settings.companyEmail, settings.companyPhone]
+    .filter(Boolean)
+    .join(" · ");
+  const footerText = settings.invoiceNotes || "Merci pour votre confiance - EE Studio";
+
   const doc = h(
     Document,
     {},
@@ -78,9 +86,9 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
         h(
           View,
           {},
-          h(Text, { style: styles.brand }, "EE Studio"),
-          h(Text, { style: styles.brandSub }, "Stratégie. Création. Impact."),
-          h(Text, { style: styles.brandSub }, "Kinshasa, RDC · contact@ee-studio.info")
+          settings.logo ? h(Image, { style: styles.logo, src: settings.logo }) : h(Text, { style: styles.brand }, settings.companyName || "EE Studio"),
+          companyLine2 ? h(Text, { style: styles.brandSub }, companyLine2) : null,
+          settings.taxId ? h(Text, { style: styles.brandSub }, `RCCM / ID Nat. : ${settings.taxId}`) : null
         ),
         h(
           View,
@@ -149,7 +157,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
       ),
       // Notes
       inv.notes ? h(Text, { style: styles.notes }, inv.notes) : null,
-      h(Text, { style: styles.footer }, "Merci pour votre confiance — EE Studio")
+      h(Text, { style: styles.footer }, footerText)
     )
   );
 

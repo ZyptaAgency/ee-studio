@@ -1,17 +1,20 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Mail, Phone, Trash2, ChevronDown } from "lucide-react";
+import { Mail, Phone, Trash2, ChevronDown, Building2, Paperclip } from "lucide-react";
 
 export type BookingRow = {
   id: string;
   name: string;
   email: string;
   phone: string | null;
-  service: string;
-  date: string;
-  time: string;
+  company: string | null;
+  service: string | null;
+  date: string | null;
+  time: string | null;
   message: string | null;
+  attachmentUrl: string | null;
+  attachmentName: string | null;
   status: string;
   createdAt: string;
 };
@@ -89,13 +92,19 @@ export default function BookingsTable({ bookings }: { bookings: BookingRow[] }) 
               >
                 <div className="min-w-0">
                   <p className="text-sm font-medium truncate">{b.name}</p>
-                  <p className="text-xs text-[#777] truncate md:hidden">{b.service}</p>
+                  <p className="text-xs text-[#777] truncate md:hidden">{b.service || "Demande générale"}</p>
                 </div>
-                <p className="text-sm text-[#aaa] truncate hidden md:block">{b.service}</p>
+                <p className="text-sm text-[#aaa] truncate hidden md:block">{b.service || "Demande générale"}</p>
                 <p className="text-xs text-[#888] hidden md:block">
-                  {b.date}
-                  <br />
-                  {b.time}
+                  {b.date ? (
+                    <>
+                      {b.date}
+                      <br />
+                      {b.time}
+                    </>
+                  ) : (
+                    <span className="text-[#555]">Pas de créneau</span>
+                  )}
                 </p>
                 <div className="flex items-center gap-2 justify-end">
                   <span className={`text-[11px] px-2.5 py-1 rounded-full border ${STATUS_STYLES[b.status]}`}>
@@ -120,8 +129,19 @@ export default function BookingsTable({ bookings }: { bookings: BookingRow[] }) 
                           <Phone size={15} /> {b.phone}
                         </a>
                       )}
+                      {b.company && (
+                        <p className="flex items-center gap-2 text-[#aaa]">
+                          <Building2 size={15} /> {b.company}
+                        </p>
+                      )}
+                      {b.attachmentUrl && (
+                        <a href={b.attachmentUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-[#A8D8C8] hover:underline">
+                          <Paperclip size={15} /> {b.attachmentName || "Pièce jointe (PDF)"}
+                        </a>
+                      )}
                       <p className="text-xs text-[#666]">
-                        Reçu le {new Date(b.createdAt).toLocaleDateString("fr-FR")} · {b.date} à {b.time}
+                        Reçu le {new Date(b.createdAt).toLocaleDateString("fr-FR")}
+                        {b.date ? ` · souhaite le ${b.date} à ${b.time}` : ""}
                       </p>
                       {b.message && (
                         <p className="text-sm text-[#999] bg-white/[0.03] rounded-lg p-3 mt-2">{b.message}</p>
